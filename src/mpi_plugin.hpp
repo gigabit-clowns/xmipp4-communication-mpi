@@ -28,12 +28,14 @@
  * 
  */
 
+#include "dynamic_shared_object.h"
+
 #include <xmipp4/core/plugin.hpp>
 
 namespace xmipp4 
 {
 
-class mpi_plugin final
+class XMIPP4_COMPUTE_MPI_API mpi_plugin final
     : public plugin
 {
     mpi_plugin() = default;
