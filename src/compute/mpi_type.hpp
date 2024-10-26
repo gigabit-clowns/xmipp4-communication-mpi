@@ -20,6 +20,14 @@
  *  e-mail address 'xmipp@cnb.csic.es'
  ***************************************************************************/
 
+/**
+ * @file mpi_type.hpp
+ * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
+ * @brief Type conversions for MPI
+ * @date 2024-10-26
+ * 
+ */
+
 #include <xmipp4/core/platform/constexpr.hpp>
 #include <xmipp4/core/memory/byte.hpp>
 
