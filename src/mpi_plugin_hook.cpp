@@ -1,5 +1,3 @@
-#pragma once
-
 /***************************************************************************
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,35 +19,29 @@
  ***************************************************************************/
 
 /**
- * @file mpi_plugin.hpp
+ * @file mpi_plugin_hook.cpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Definition of the mpi_plugin class
+ * @brief Exports the entry point for this plugin.
  * @date 2024-10-26
  * 
  */
 
+#include "mpi_plugin.hpp"
 
-#include <xmipp4/core/plugin.hpp>
+#include <xmipp4/core/platform/dynamic_shared_object.h>
 
-namespace xmipp4 
+#if defined(XMIPP4_COMPUTE_MPI_EXPORTING)
+    #define XMIPP4_COMPUTE_MPI_API XMIPP4_EXPORT
+#else
+    #define XMIPP4_COMPUTE_MPI_API XMIPP4_IMPORT
+#endif
+
+static const xmipp4::mpi_plugin instance;
+
+extern "C"
 {
-
-class mpi_plugin final
-    : public plugin
+XMIPP4_COMPUTE_MPI_API const xmipp4::plugin* xmipp4_get_plugin() 
 {
-public:
-    mpi_plugin() = default;
-    mpi_plugin(const mpi_plugin& other) = default;
-    mpi_plugin(mpi_plugin&& other) = default;
-    virtual ~mpi_plugin() = default;
-
-    mpi_plugin& operator=(const mpi_plugin& other) = default;
-    mpi_plugin& operator=(mpi_plugin&& other) = default;
-
-    const std::string& get_name() const noexcept override;
-    version get_version() const noexcept override;
-    void register_at(interface_registry& registry) const override;
-
-};
-
-} // namespace xmipp4
+    return &instance;
+}
+}
