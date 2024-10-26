@@ -41,7 +41,7 @@ void mpi_check_error(int error_code)
     {
         char message[MPI_MAX_ERROR_STRING];
         int count = 0;
-        MPI_Error_string(error, message, &count);
+        MPI_Error_string(error_code, message, &count);
         throw std::runtime_error(message);
     }
 }
