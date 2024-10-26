@@ -22,3 +22,10 @@ runs:
         source-dir: /tmp/xmipp4-core/
         build-dir: /tmp/xmipp4-core/build"
         run-build: true
+
+    - name: Install
+      working-directory: /tmp/xmipp4-core/
+      run: cmake --install build
+
+    - name: Cleanup
+      run: rm -rf /tmp/xmipp4-core/
