@@ -28,10 +28,252 @@
 
 #include "mpi_host_communicator.hpp"
 
+#include "mpi_error.hpp"
+#include "mpi_type.hpp"
+#include "mpi_operation.hpp"
+
 namespace xmipp4 
 {
 namespace compute
 {
+namespace detail
+{
+
+template<typename Comm, typename T, typename... Ts>
+void mpi_host_communicator_helper<Comm, T, Ts...>::send(int destination_rank, 
+                                                        span<const T> buf )
+{
+    const auto error = MPI_Send(
+        buf.data(), buf.size(), mpi_type<T>::value(), 
+        destination_rank, 0, get_communicator()
+    );
+    mpi_check_error(error);
+}
+
+template<typename Comm, typename T, typename... Ts>
+std::size_t 
+mpi_host_communicator_helper<Comm, T, Ts...>::receive(int source_rank, 
+                                                      span<T> buf)
+{
+    MPI_Status status;
+    const auto error = MPI_Recv(
+        buf.data(), buf.size(), mpi_type<T>::value(),
+        source_rank, 0, 
+        get_communicator(), &status
+    );
+    mpi_check_error(error);
+
+    int count;
+    MPI_Get_count(&status, mpi_type<T>::value(), &count);
+    return count;
+}
+
+template<typename Comm, typename T, typename... Ts>
+std::size_t 
+mpi_host_communicator_helper<Comm, T, Ts...>::send_receive(int destination_rank, 
+                                                           span<const T> send_buf,
+                                                           int source_rank, 
+                                                           span<T> receive_buf )
+{
+    MPI_Status status;
+    const auto error = MPI_Sendrecv(
+        send_buf.data(), send_buf.size(), mpi_type<T>::value(),
+        destination_rank, 0,
+        receive_buf.data(), receive_buf.size(), mpi_type<T>::value(),
+        source_rank, 0, 
+        get_communicator(), &status
+    );
+    mpi_check_error(error);
+
+    int count;
+    MPI_Get_count(&status, mpi_type<T>::value(), &count);
+    return count;
+}
+
+template<typename Comm, typename T, typename... Ts>
+void mpi_host_communicator_helper<Comm, T, Ts...>::broadcast(int root, span<T> buf)
+{
+    const auto error = MPI_Bcast(
+        buf.data(), buf.size(), mpi_type<T>::value(), root,
+        get_communicator()
+
+    );
+    mpi_check_error(error);
+}
+
+template<typename Comm, typename T, typename... Ts>
+void mpi_host_communicator_helper<Comm, T, Ts...>::scatter(int root, 
+                                                           span<const T> send_buf, 
+                                                           span<T> recv_buf )
+{
+    int error;
+    if(send_buf.data() == recv_buf.data() && root == get_rank())
+    {
+        error = MPI_Scatter(
+            send_buf.data(), send_buf.size(), mpi_type<T>::value(),
+            MPI_IN_PLACE, recv_buf.size(), mpi_type<T>::value(),
+            root, get_communicator()
+        );
+    }
+    else
+    {
+        error = MPI_Scatter(
+            send_buf.data(), send_buf.size(), mpi_type<T>::value(),
+            recv_buf.data(), recv_buf.size(), mpi_type<T>::value(),
+            root, get_communicator()
+        );
+    }
+    mpi_check_error(error);
+}
+
+template<typename Comm, typename T, typename... Ts>
+void mpi_host_communicator_helper<Comm, T, Ts...>::gather(int root, 
+                                                           span<const T> send_buf, 
+                                                           span<T> recv_buf )
+{
+    int error;
+    if(send_buf.data() == recv_buf.data() && root == get_rank())
+    {
+        error = MPI_Gather(
+            MPI_IN_PLACE, send_buf.size(), mpi_type<T>::value(),
+            recv_buf.data(), recv_buf.size(), mpi_type<T>::value(),
+            root, get_communicator()
+        );
+    }
+    else
+    {
+        error = MPI_Gather(
+            send_buf.data(), send_buf.size(), mpi_type<T>::value(),
+            recv_buf.data(), recv_buf.size(), mpi_type<T>::value(),
+            root, get_communicator()
+        );
+    }
+    mpi_check_error(error);
+}
+
+template<typename Comm, typename T, typename... Ts>
+void mpi_host_communicator_helper<Comm, T, Ts...>::all_gather(span<const T> send_buf, 
+                                                              span<T> recv_buf )
+{
+    int error;
+    if(send_buf.data() == recv_buf.data())
+    {
+        error = MPI_Allgather(
+            MPI_IN_PLACE, send_buf.size(), mpi_type<T>::value(),
+            recv_buf.data(), recv_buf.size(), mpi_type<T>::value(),
+            get_communicator()
+        );
+    }
+    else
+    {
+        error = MPI_Allgather(
+            send_buf.data(), send_buf.size(), mpi_type<T>::value(),
+            recv_buf.data(), recv_buf.size(), mpi_type<T>::value(),
+            get_communicator()
+        );
+    }
+    mpi_check_error(error);
+}
+
+template<typename Comm, typename T, typename... Ts>
+void mpi_host_communicator_helper<Comm, T, Ts...>::reduce(int root, 
+                                                          reduction_operation op,
+                                                          span<const T> send_buf, 
+                                                          span<T> recv_buf )
+{
+    if (send_buf.size() != recv_buf.size())
+    {
+        throw std::runtime_error("Send and receive buffers must have the same size");
+    }
+
+    int error;
+    if(send_buf.data() == recv_buf.data() && root == get_rank())
+    {
+        error = MPI_Reduce(
+            MPI_IN_PLACE, recv_buf.data(), send_buf.size(), mpi_type<T>::value(),
+            to_mpi(op), root, get_communicator()
+        );
+    }
+    else
+    {
+        error = MPI_Reduce(
+            send_buf.data(), recv_buf.data(), send_buf.size(), mpi_type<T>::value(),
+            to_mpi(op), root, get_communicator()
+        );
+    }
+    mpi_check_error(error);
+}
+
+template<typename Comm, typename T, typename... Ts>
+void mpi_host_communicator_helper<Comm, T, Ts...>::all_reduce(reduction_operation op,
+                                                              span<const T> send_buf, 
+                                                              span<T> recv_buf )
+{
+
+    if (send_buf.size() != recv_buf.size())
+    {
+        throw std::runtime_error("Send and receive buffers must have the same size");
+    }
+
+    int error;
+    if(send_buf.data() == recv_buf.data())
+    {
+        error = MPI_Allreduce(
+            MPI_IN_PLACE, recv_buf.data(), send_buf.size(), mpi_type<T>::value(),
+            to_mpi(op), get_communicator()
+        );
+    }
+    else
+    {
+        error = MPI_Allreduce(
+            send_buf.data(), recv_buf.data(), send_buf.size(), mpi_type<T>::value(),
+            to_mpi(op), get_communicator()
+        );
+    }
+    mpi_check_error(error);
+
+}
+
+template<typename Comm, typename T, typename... Ts>
+void mpi_host_communicator_helper<Comm, T, Ts...>::all_to_all(span<const T> send_buf, span<T> recv_buf)
+{
+    int error;
+    if(send_buf.data() == recv_buf.data())
+    {
+        error = MPI_Alltoall(
+            MPI_IN_PLACE, send_buf.size(), mpi_type<T>::value(),
+            recv_buf.data(), recv_buf.size(), mpi_type<T>::value(),
+            get_communicator()
+        );
+    }
+    else
+    {
+        error = MPI_Alltoall(
+            send_buf.data(), send_buf.size(), mpi_type<T>::value(),
+            recv_buf.data(), recv_buf.size(), mpi_type<T>::value(),
+            get_communicator()
+        );
+    }
+    mpi_check_error(error);
+}
+
+template<typename Comm, typename T, typename... Ts>
+int mpi_host_communicator_helper<Comm, T, Ts...>::get_rank() const
+{
+    return static_cast<const Comm*>(this)->get_rank();
+}
+
+template<typename Comm, typename T, typename... Ts>
+MPI_Comm mpi_host_communicator_helper<Comm, T, Ts...>::get_communicator() noexcept
+{
+    return static_cast<Comm*>(this)->get_handle();
+}
+
+} // namespace detail
+
+
+
+
 
 mpi_host_communicator::mpi_host_communicator() noexcept
     : mpi_host_communicator(MPI_COMM_NULL)
@@ -61,6 +303,11 @@ mpi_host_communicator::operator=(mpi_host_communicator &&other) noexcept
     other.reset();
     return *this;
 }
+    
+MPI_Comm mpi_host_communicator::get_handle() noexcept
+{
+    return m_communicator;   
+}
 
 void mpi_host_communicator::reset() noexcept
 {
@@ -81,7 +328,7 @@ std::size_t mpi_host_communicator::get_size() const
     int result;
     
     const auto error = MPI_Comm_size(m_communicator, &result);
-    check(error);
+    mpi_check_error(error);
 
     return result;
 }
@@ -91,7 +338,7 @@ int mpi_host_communicator::get_rank() const
     int result;
     
     const auto error = MPI_Comm_rank(m_communicator, &result);
-    check(error);
+    mpi_check_error(error);
 
     return result;
 }
@@ -107,7 +354,7 @@ mpi_host_communicator::split(int colour,
         colour, rank_priority,
         &new_communicator
     );
-    check(error);
+    mpi_check_error(error);
 
     try
     {
@@ -133,7 +380,7 @@ mpi_host_communicator::split_shared(int colour,
         colour, rank_priority,
         &new_communicator
     );
-    check(error);
+    mpi_check_error(error);
 
     try
     {
@@ -152,22 +399,7 @@ mpi_host_communicator::split_shared(int colour,
 void mpi_host_communicator::barrier()
 {
     const auto error = MPI_Barrier(m_communicator);
-    check(error);
-}
-
-
-
-
-
-void mpi_host_communicator::check(int error)
-{
-    if (error != MPI_SUCCESS)
-    {
-        char message[MPI_MAX_ERROR_STRING];
-        int count = 0;
-        MPI_Error_string(error, message, &count);
-        throw std::runtime_error(message);
-    }
+    mpi_check_error(error);
 }
 
 } // namespace compute
