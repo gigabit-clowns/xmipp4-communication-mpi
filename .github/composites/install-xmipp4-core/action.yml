@@ -1,0 +1,24 @@
+name: "Install xmipp4-core"
+description: "Build and install xmipp4-core from source"
+
+inputs:
+  ref:
+    description: "Branch or tag in the xmipp4-core repo"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@main
+      with:
+        repository: https://github.com/gigabit-clowns/xmipp4-core
+        ref: ${{ inputs.ref }}
+        path: /tmp//xmipp4-core/
+
+    - name: Configure and build with CMake
+      uses: threeal/cmake-action@main
+      with:
+        source-dir: /tmp/xmipp4-core/
+        build-dir: /tmp/xmipp4-core/build"
+        run-build: true
