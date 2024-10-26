@@ -14,7 +14,7 @@ runs:
       with:
         repository: https://github.com/gigabit-clowns/xmipp4-core
         ref: ${{ inputs.ref }}
-        path: /tmp//xmipp4-core/
+        path: /tmp/xmipp4-core/
 
     - name: Configure and build with CMake
       uses: threeal/cmake-action@main
@@ -24,8 +24,10 @@ runs:
         run-build: true
 
     - name: Install
+      shell: bash
       working-directory: /tmp/xmipp4-core/
       run: cmake --install build
 
     - name: Cleanup
+      shell: bash
       run: rm -rf /tmp/xmipp4-core/
