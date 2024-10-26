@@ -57,7 +57,7 @@ bool mpi_host_communicator_backend::is_available() const noexcept
 std::shared_ptr<host_communicator> 
 mpi_host_communicator_backend::get_world_communicator() const
 {
-    // TODO
+    return nullptr; // TODO
 }
 
 } // namespace compute
