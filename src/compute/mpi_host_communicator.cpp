@@ -235,7 +235,8 @@ void mpi_host_communicator_helper<Comm, T, Ts...>::all_reduce(reduction_operatio
 }
 
 template<typename Comm, typename T, typename... Ts>
-void mpi_host_communicator_helper<Comm, T, Ts...>::all_to_all(span<const T> send_buf, span<T> recv_buf)
+void mpi_host_communicator_helper<Comm, T, Ts...>::all_to_all(span<const T> send_buf, 
+                                                              span<T> recv_buf )
 {
     int error;
     if(send_buf.data() == recv_buf.data())
