@@ -43,10 +43,10 @@ const std::string& mpi_host_communicator_backend::get_name() const noexcept
 
 version mpi_host_communicator_backend::get_version() const noexcept
 {
-    int ver = 0;
-    int sub_ver = 0;
-    MPI_Get_version(&ver, &sub_ver);
-    return version(ver, sub_ver, 0);
+    int major = 0;
+    int minor = 0;
+    MPI_Get_version(&major, &minor);
+    return version(major, minor, 0);
 }
 
 bool mpi_host_communicator_backend::is_available() const noexcept
