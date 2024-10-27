@@ -32,6 +32,8 @@
 
 #include <memory>
 
+#include <mpi.h>
+
 namespace xmipp4 
 {
 namespace compute

@@ -31,7 +31,7 @@
 #include <xmipp4/core/platform/constexpr.hpp>
 #include <xmipp4/core/memory/byte.hpp>
 
-#include <mpi/mpi.h>
+#include <mpi.h>
 
 namespace xmipp4
 {

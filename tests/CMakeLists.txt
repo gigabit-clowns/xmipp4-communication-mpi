@@ -65,8 +65,14 @@ target_link_libraries(
 if(WIN32)
 	add_custom_command(TARGET ${TESTS_NAME}
 		POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:xmipp4-core> "${CMAKE_CURRENT_BINARY_DIR}"
+		COMMENT "Copy xmipp4-core DLL file to ${CMAKE_CURRENT_BINARY_DIR} directory" VERBATIM
+	)
+
+	add_custom_command(TARGET ${TESTS_NAME}
+		POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> "${CMAKE_CURRENT_BINARY_DIR}"
-		COMMENT "Copy DLL file to ${CMAKE_CURRENT_BINARY_DIR} directory" VERBATIM
+		COMMENT "Copy xmip4-compute-mpi DLL file to ${CMAKE_CURRENT_BINARY_DIR} directory" VERBATIM
 	)
 endif()
 

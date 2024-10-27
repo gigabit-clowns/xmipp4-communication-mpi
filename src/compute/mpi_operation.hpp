@@ -30,7 +30,7 @@
 
 #include <xmipp4/core/compute/reduction_operation.hpp>
 
-#include <mpi/mpi.h>
+#include <mpi.h>
 
 namespace xmipp4
 {

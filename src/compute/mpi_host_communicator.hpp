@@ -35,7 +35,7 @@
 
 #include <memory>
 
-#include <mpi/mpi.h>
+#include <mpi.h>
 
 namespace xmipp4 
 {

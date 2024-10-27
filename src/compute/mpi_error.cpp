@@ -28,7 +28,8 @@
 
 #include "mpi_error.hpp"
 
-#include <mpi/mpi.h>
+#include <mpi.h>
+#include <stdexcept>
 
 namespace xmipp4 
 {

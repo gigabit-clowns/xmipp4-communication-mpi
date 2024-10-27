@@ -26,7 +26,7 @@ cmake_minimum_required(VERSION 3.16)
 project(
   xmipp4-compute-mpi
 	VERSION 0.1.0 
-	LANGUAGES CXX
+	LANGUAGES C CXX
 )
 
 # Include CMake packages
@@ -86,7 +86,7 @@ endif()
 
 # Enable all warnings during compilation
 if(MSVC)
-	target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
+	target_compile_options(${PROJECT_NAME} PRIVATE /W4)
 else()
 	target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic)
 endif()
