@@ -21,14 +21,12 @@
  ***************************************************************************/
 
 /**
- * @file mpi_host_communicator_backend.hpp
+ * @file mpi_instance.hpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Definition of the compute::mpi_host_communicator_backend class
+ * @brief Provides the compute::mpi_instance class.
  * @date 2024-10-26
  * 
  */
-
-#include <xmipp4/core/compute/host_communicator_backend.hpp>
 
 #include <memory>
 
@@ -37,26 +35,26 @@ namespace xmipp4
 namespace compute
 {
 
-class mpi_host_communicator;
-
-class mpi_host_communicator_backend final
-    : public host_communicator_backend
+class mpi_instance
 {
 public:
-    mpi_host_communicator_backend() = default;
-    mpi_host_communicator_backend(const mpi_host_communicator_backend &other) = delete;
-    mpi_host_communicator_backend(mpi_host_communicator_backend &&other) = delete;
-    virtual ~mpi_host_communicator_backend() = default;
+    mpi_instance(const mpi_instance &other) = delete;
+    mpi_instance(mpi_instance &&other) = delete;
+    ~mpi_instance();
 
-    mpi_host_communicator_backend& operator=(const mpi_host_communicator_backend &other) = delete;
-    mpi_host_communicator_backend& operator=(mpi_host_communicator_backend &&other) = delete;
+    mpi_instance& operator=(const mpi_instance &other) = delete;
+    mpi_instance& operator=(mpi_instance &&other) = delete;
 
-    const std::string& get_name() const noexcept override;
-    version get_version() const noexcept override;
-    bool is_available() const noexcept override;
-    std::shared_ptr<host_communicator> get_world_communicator() const override;
+    static mpi_instance& get();
+
+private:
+    static std::unique_ptr<mpi_instance> m_singleton;
+    
+    mpi_instance();
+
 
 };
 
 } // namespace compute
 } // namespace xmipp4
+

@@ -28,7 +28,10 @@
 
 #include "mpi_host_communicator_backend.hpp"
 
-#include <sstream>
+#include "mpi_instance.hpp"
+#include "mpi_host_communicator.hpp"
+
+#include <mpi/mpi.h>
 
 namespace xmipp4 
 {
@@ -57,7 +60,8 @@ bool mpi_host_communicator_backend::is_available() const noexcept
 std::shared_ptr<host_communicator> 
 mpi_host_communicator_backend::get_world_communicator() const
 {
-    return nullptr; // TODO
+    mpi_instance::get(); // Ensure MPI is initialized
+    return std::make_shared<mpi_host_communicator>(MPI_COMM_WORLD);
 }
 
 } // namespace compute
