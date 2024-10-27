@@ -71,6 +71,9 @@ jobs:
         uses: ./.github/composites/install-xmipp4-core
         with:
           ref: main
+      
+      - name: Test
+        run: ls "../xmipp4-core/dist/lib/cmake/xmipp4-core/"
 
       - name: Configure and build with CMake
         uses: threeal/cmake-action@main
