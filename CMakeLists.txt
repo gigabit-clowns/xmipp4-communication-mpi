@@ -74,7 +74,7 @@ target_link_libraries(
 )
 
 # Set up clang-tidy
-if(XMIPP4_CORE_LINT_CLANG_TIDY)
+if(XMIPP4_COMPUTE_MPI_LINT_CLANG_TIDY)
 	find_program(CLANG_TIDY_EXE clang-tidy REQUIRED)
 	set_target_properties(
 		${PROJECT_NAME} 
