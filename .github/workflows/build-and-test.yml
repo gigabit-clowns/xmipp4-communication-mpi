@@ -58,7 +58,7 @@ jobs:
           mpi: mpich
         - os: windows-latest
           compiler: {cc: cl, cxx: cl}
-          mpi: msmpi
+          mpi: intelmpi
   
     runs-on: ${{ matrix.os }}
     defaults:
