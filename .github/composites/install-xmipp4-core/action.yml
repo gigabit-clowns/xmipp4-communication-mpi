@@ -15,6 +15,7 @@ runs:
         repository: gigabit-clowns/xmipp4-core
         ref: ${{ inputs.ref }}
         path: xmipp4-core
+        token: ${{ github.token }}
 
     - name: Configure and build with CMake
       uses: threeal/cmake-action@main
