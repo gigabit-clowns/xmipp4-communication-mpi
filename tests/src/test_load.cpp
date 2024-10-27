@@ -31,7 +31,6 @@
 #include <xmipp4/core/interface_registry.hpp>
 #include <xmipp4/core/plugin_manager.hpp>
 #include <xmipp4/core/plugin.hpp>
-#include <xmipp4/core/compute/host_communicator_backend.hpp>
 #include <xmipp4/core/compute/host_communicator_manager.hpp>
 
 using namespace xmipp4;
