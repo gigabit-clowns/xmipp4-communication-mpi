@@ -44,11 +44,18 @@ jobs:
         - {cc: clang, cxx: clang++}
         mpi:
         - openmpi
-        - mpich
-
+        
+        # TODO mpich with Clang is not working. Revisit
         include:
+        - os: ubuntu-latest
+          compiler: {cc: gcc, cxx: g++}
+          mpi: mpich
         - os: macos-latest
           compiler: {cc: clang, cxx: clang++}
+          mpi: openmpi
+        - os: macos-latest
+          compiler: {cc: clang, cxx: clang++}
+          mpi: mpich
         - os: windows-latest
           compiler: {cc: cl, cxx: cl}
           mpi: msmpi
