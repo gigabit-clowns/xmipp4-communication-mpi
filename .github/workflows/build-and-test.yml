@@ -62,7 +62,7 @@ jobs:
         uses: actions/checkout@main
 
       - name: Install MPI
-        uses: mpi4py/setup-mpi@v1
+        uses: mpi4py/setup-mpi@master
         with:
           mpi: ${{ matrix.mpi }}
 
