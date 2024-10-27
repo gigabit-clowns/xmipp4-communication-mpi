@@ -36,7 +36,6 @@ runs:
         build-dir: "${{ inputs.path }}/build"
         options: |
           BUILD_TESTING=OFF
-          CMAKE_INSTALL_PREFIX=${{ inputs.path }}/dist
         run-build: true
 
     - name: Install
