@@ -34,12 +34,14 @@ runs:
       with:
         source-dir: "${{ inputs.path }}"
         build-dir: "${{ inputs.path }}/build"
+        options: |
+          BUILD_TESTING=OFF
         run-build: true
 
     - name: Install
       shell: bash
       working-directory: "${{ inputs.path }}"
-      run: cmake --install build --install dist/
+      run: cmake --install build --prefix dist/
 
     - name: Generate output
       id: gen-output
