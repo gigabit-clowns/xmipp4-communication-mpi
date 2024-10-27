@@ -5,7 +5,7 @@ inputs:
   ref:
     description: "Branch or tag in the xmipp4-core repo"
     required: false
-  token:
+  access_token:
     description: "Token to access other private repositories"
     required: true
 
@@ -18,7 +18,7 @@ runs:
         repository: gigabit-clowns/xmipp4-core
         ref: ${{ inputs.ref }}
         path: xmipp4-core
-        token: ${{ inputs.token }}
+        token: ${{ inputs.access_token }}
 
     - name: Configure and build with CMake
       uses: threeal/cmake-action@main

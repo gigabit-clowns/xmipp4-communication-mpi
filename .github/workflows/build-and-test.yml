@@ -70,7 +70,7 @@ jobs:
         uses: ./.github/composites/install-xmipp4-core
         with:
           ref: main
-          token: ${{ secrets.READ_TOKEN_MARTIN }}
+          access_token: ${{ secrets.READ_TOKEN_MARTIN }}
 
       - name: Configure and build with CMake
         uses: threeal/cmake-action@main
