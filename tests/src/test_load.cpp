@@ -19,50 +19,40 @@
  ***************************************************************************/
 
 /**
- * @file mpi_host_communicator_backend.cpp
+ * @file test_version.cpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Implementation of mpi_host_communicator_backend.hpp
- * @date 2024-10-26
- * 
+ * @brief Test for version.hpp
+ * @date 2023-08-12
  */
 
-#include "mpi_host_communicator_backend.hpp"
 
-#include "mpi_instance.hpp"
-#include "mpi_host_communicator.hpp"
+#include <catch2/catch_test_macros.hpp>
 
-#include <mpi/mpi.h>
+#include <xmipp4/core/interface_registry.hpp>
+#include <xmipp4/core/plugin_manager.hpp>
+#include <xmipp4/core/plugin.hpp>
+#include <xmipp4/core/compute/host_communicator_manager.hpp>
 
-namespace xmipp4 
+using namespace xmipp4;
+
+
+TEST_CASE( "load and register xmipp4-compute-mpi plugin", "[compute-mpi]" ) 
 {
-namespace compute
-{
+    plugin_manager manager;
 
-const std::string& mpi_host_communicator_backend::get_name() const noexcept
-{
-    static const std::string name = "mpi";
-    return name;
+    
+    const auto* mpi_plugin = 
+        manager.load_plugin("../libxmipp4-compute-mpi.so");
+    REQUIRE( mpi_plugin != nullptr );
+    REQUIRE( mpi_plugin->get_name() == "xmipp4-compute-mpi" );
+
+    interface_registry interfaces;
+    mpi_plugin->register_at(interfaces);
+
+    auto *mpi_backend =
+        interfaces.get_interface_manager<compute::host_communicator_manager>()
+        .get_backend("mpi");
+    REQUIRE( mpi_backend != nullptr );
+    REQUIRE( mpi_backend->get_name() == "mpi" );
+
 }
-
-version mpi_host_communicator_backend::get_version() const noexcept
-{
-    int major = 0;
-    int minor = 0;
-    MPI_Get_version(&major, &minor);
-    return version(major, minor, 0);
-}
-
-bool mpi_host_communicator_backend::is_available() const noexcept
-{
-    return true;
-}
-
-std::shared_ptr<host_communicator> 
-mpi_host_communicator_backend::get_world_communicator() const
-{
-    mpi_instance::get(); // Ensure MPI is initialized
-    return std::make_shared<mpi_host_communicator>(MPI_COMM_WORLD);
-}
-
-} // namespace compute
-} // namespace xmipp4

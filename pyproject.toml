@@ -51,7 +51,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/gigabit-clowns/xmipp4-core"
+Homepage = "https://github.com/gigabit-clowns/xmipp4-compute-mpi"
 
 [tool.scikit-build]
 experimental=true # For wheel.install-dir

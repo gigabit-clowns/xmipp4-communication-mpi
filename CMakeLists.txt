@@ -31,6 +31,7 @@ project(
 
 # Include CMake packages
 include(GNUInstallDirs)
+include(CTest)
 
 # Declare build options
 option(XMIPP4_COMPUTE_MPI_LINT_CLANG_TIDY "Lint with clang-tidy" OFF)
@@ -74,7 +75,7 @@ target_link_libraries(
 )
 
 # Set up clang-tidy
-if(XMIPP4_CORE_LINT_CLANG_TIDY)
+if(XMIPP4_COMPUTE_MPI_LINT_CLANG_TIDY)
 	find_program(CLANG_TIDY_EXE clang-tidy REQUIRED)
 	set_target_properties(
 		${PROJECT_NAME} 
@@ -98,5 +99,10 @@ endif()
 # Install library's binary files and headers
 install(
 	TARGETS ${PROJECT_NAME}
-	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/xmipp4/plugins/
 )
+
+# Only build tests if it is the main project
+if(BUILD_TESTING)
+	add_subdirectory(tests)
+endif()
