@@ -31,7 +31,7 @@
 #include "mpi_instance.hpp"
 #include "mpi_host_communicator.hpp"
 
-#include <mpi/mpi.h>
+#include <mpi.h>
 
 namespace xmipp4 
 {

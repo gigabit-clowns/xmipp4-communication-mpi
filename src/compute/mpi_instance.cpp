@@ -30,7 +30,7 @@
 
 #include <xmipp4/core/platform/assert.hpp>
 
-#include <mpi/mpi.h>
+#include <mpi.h>
 
 namespace xmipp4 
 {
