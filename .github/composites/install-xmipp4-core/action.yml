@@ -46,4 +46,4 @@ runs:
     - name: Generate output
       id: gen-output
       shell: bash
-      run: echo "xmipp4-core-root=\"${{ inputs.path }}/dist\"" >> "$GITHUB_OUTPUT"
+      run: echo "xmipp4-core-root=${{ inputs.path }}/dist" >> "$GITHUB_OUTPUT"
