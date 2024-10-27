@@ -99,7 +99,7 @@ endif()
 # Install library's binary files and headers
 install(
 	TARGETS ${PROJECT_NAME}
-	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/xmipp4/plugins/
 )
 
 # Only build tests if it is the main project
