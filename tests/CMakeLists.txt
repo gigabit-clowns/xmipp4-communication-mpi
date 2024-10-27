@@ -32,7 +32,7 @@ FetchContent_Declare(
   GIT_TAG        v3.5.4
 )
 FetchContent_MakeAvailable(Catch2)
-#include(Catch)
+include(Catch)
 
 # Test excecutable name
 set(TESTS_NAME "${PROJECT_NAME}_tests")
