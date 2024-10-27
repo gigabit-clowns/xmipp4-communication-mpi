@@ -81,6 +81,6 @@ jobs:
           cxx-compiler: ${{ matrix.compiler.cxx }}
           options: |
             CMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
-            XMIPP4_CORE_ROOT=${{ steps.install-xmipp4-core.outputs.xmipp4-core-root }}
+            xmipp4-core_ROOT=${{ steps.install-xmipp4-core.outputs.xmipp4-core-root }}
           run-build: true
           build-args: --config ${{ env.BUILD_TYPE }}
