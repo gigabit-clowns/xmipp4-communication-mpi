@@ -32,6 +32,8 @@
 #include "mpi_type.hpp"
 #include "mpi_operation.hpp"
 
+#include <stdexcept>
+
 namespace xmipp4 
 {
 namespace compute
