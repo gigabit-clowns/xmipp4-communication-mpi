@@ -36,7 +36,9 @@ runs:
         build-dir: "${{ inputs.path }}/build"
         options: |
           BUILD_TESTING=OFF
+          CMAKE_BUILD_TYPE=Release
         run-build: true
+        build-args: --config ${{ env.BUILD_TYPE }}
 
     - name: Install
       shell: bash
