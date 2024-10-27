@@ -26,7 +26,7 @@ cmake_minimum_required(VERSION 3.16)
 project(
   xmipp4-compute-mpi
 	VERSION 0.1.0 
-	LANGUAGES CXX
+	LANGUAGES C CXX
 )
 
 # Include CMake packages
