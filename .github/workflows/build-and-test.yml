@@ -91,3 +91,7 @@ jobs:
             xmipp4-core_ROOT=${{ steps.install-xmipp4-core.outputs.xmipp4-core-root }}
           run-build: true
           build-args: --config ${{ env.BUILD_TYPE }}
+
+      - name: Run tests
+        working-directory: "${{ github.workspace }}/build"
+        run: ctest -C ${{ env.BUILD_TYPE }} -T test --rerun-failed --output-on-failure
