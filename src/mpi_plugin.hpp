@@ -50,6 +50,9 @@ public:
     version get_version() const noexcept override;
     void register_at(interface_registry& registry) const override;
 
+private:
+    static const std::string name;
+
 };
 
 } // namespace xmipp4

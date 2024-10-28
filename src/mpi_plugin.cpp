@@ -35,9 +35,10 @@
 namespace xmipp4 
 {
 
+const std::string mpi_plugin::name = "xmipp4-compute-mpi";
+
 const std::string& mpi_plugin::get_name() const noexcept
 {
-    static const std::string name = "xmipp4-compute-mpi";
     return name; 
 }
 
