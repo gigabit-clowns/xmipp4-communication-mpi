@@ -40,9 +40,9 @@ using namespace xmipp4;
 static std::string get_mpi_plugin_path()
 {
     #if XMIPP4_WINDOWS
-        return "..\\xmipp4-compute-mpi.dll";
+        return "..\\..\\xmipp4-compute-mpi.dll";
     #elif XMIPP4_APPLE || XMIPP4_LINUX
-        return "../libxmipp4-compute-mpi.so";
+        return "../../libxmipp4-compute-mpi.so";
     #else
         #error "Unknown platform"
     #endif
