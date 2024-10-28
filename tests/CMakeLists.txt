@@ -68,12 +68,6 @@ if(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:xmipp4-core> "${CMAKE_CURRENT_BINARY_DIR}"
 		COMMENT "Copy xmipp4-core DLL file to ${CMAKE_CURRENT_BINARY_DIR} directory" VERBATIM
 	)
-
-	add_custom_command(TARGET ${TESTS_NAME}
-		POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> "${CMAKE_CURRENT_BINARY_DIR}"
-		COMMENT "Copy xmip4-compute-mpi DLL file to ${CMAKE_CURRENT_BINARY_DIR} directory" VERBATIM
-	)
 endif()
 
 # Discover tests
