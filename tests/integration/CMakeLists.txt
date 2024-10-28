@@ -70,6 +70,12 @@ if(WIN32)
 	)
 endif()
 
+# Copy the plugin Shared Library
+add_custom_command(TARGET ${TESTS_NAME}
+	POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> "${CMAKE_CURRENT_BINARY_DIR}"
+)
+
 # Discover tests
 catch_discover_tests(${TESTS_NAME})
 
