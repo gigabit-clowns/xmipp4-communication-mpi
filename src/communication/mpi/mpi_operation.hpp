@@ -1,3 +1,5 @@
+#pragma once
+
 /***************************************************************************
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,50 +21,23 @@
  ***************************************************************************/
 
 /**
- * @file mpi_host_communicator_backend.cpp
+ * @file mpi_operation.hpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Implementation of mpi_host_communicator_backend.hpp
+ * @brief Operation conversion to MPI
  * @date 2024-10-26
  * 
  */
 
-#include "mpi_host_communicator_backend.hpp"
-
-#include "mpi_instance.hpp"
-#include "mpi_host_communicator.hpp"
+#include <xmipp4/core/communication/reduction_operation.hpp>
 
 #include <mpi.h>
 
-namespace xmipp4 
+namespace xmipp4
 {
-namespace compute
+namespace communication
 {
 
-const std::string& mpi_host_communicator_backend::get_name() const noexcept
-{
-    static const std::string name = "mpi";
-    return name;
-}
+MPI_Op to_mpi(reduction_operation op) noexcept;
 
-version mpi_host_communicator_backend::get_version() const noexcept
-{
-    int major = 0;
-    int minor = 0;
-    MPI_Get_version(&major, &minor);
-    return version(major, minor, 0);
-}
-
-bool mpi_host_communicator_backend::is_available() const noexcept
-{
-    return true;
-}
-
-std::shared_ptr<host_communicator> 
-mpi_host_communicator_backend::get_world_communicator() const
-{
-    mpi_instance::get(); // Ensure MPI is initialized
-    return std::make_shared<mpi_host_communicator>(MPI_COMM_WORLD);
-}
-
-} // namespace compute
+} // namespace communication
 } // namespace xmipp4

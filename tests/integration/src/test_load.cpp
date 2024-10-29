@@ -31,7 +31,7 @@
 #include <xmipp4/core/interface_registry.hpp>
 #include <xmipp4/core/plugin_manager.hpp>
 #include <xmipp4/core/plugin.hpp>
-#include <xmipp4/core/compute/host_communicator_manager.hpp>
+#include <xmipp4/core/communication/communicator_manager.hpp>
 #include <xmipp4/core/platform/operating_system.h>
 
 using namespace xmipp4;
@@ -40,15 +40,15 @@ using namespace xmipp4;
 static std::string get_mpi_plugin_path()
 {
     #if XMIPP4_WINDOWS
-        return "xmipp4-compute-mpi.dll";
+        return "xmipp4-communication-mpi.dll";
     #elif XMIPP4_APPLE || XMIPP4_LINUX
-        return "./libxmipp4-compute-mpi.so";
+        return "./libxmipp4-communication-mpi.so";
     #else
         #error "Unknown platform"
     #endif
 }
 
-TEST_CASE( "load and register xmipp4-compute-mpi plugin", "[compute-mpi]" ) 
+TEST_CASE( "load and register xmipp4-communication-mpi plugin", "[communication-mpi]" ) 
 {
     plugin_manager manager;
 
@@ -56,13 +56,13 @@ TEST_CASE( "load and register xmipp4-compute-mpi plugin", "[compute-mpi]" )
     const auto* mpi_plugin = 
         manager.load_plugin(get_mpi_plugin_path());
     REQUIRE( mpi_plugin != nullptr );
-    REQUIRE( mpi_plugin->get_name() == "xmipp4-compute-mpi" );
+    REQUIRE( mpi_plugin->get_name() == "xmipp4-communication-mpi" );
 
     interface_registry interfaces;
     mpi_plugin->register_at(interfaces);
 
     auto *mpi_backend =
-        interfaces.get_interface_manager<compute::host_communicator_manager>()
+        interfaces.get_interface_manager<communication::communicator_manager>()
         .get_backend("mpi");
     REQUIRE( mpi_backend != nullptr );
     REQUIRE( mpi_backend->get_name() == "mpi" );

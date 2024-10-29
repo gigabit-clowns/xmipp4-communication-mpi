@@ -21,40 +21,44 @@
  ***************************************************************************/
 
 /**
- * @file mpi_instance.hpp
+ * @file mpi_communicator_backend.hpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Provides the compute::mpi_instance class.
+ * @brief Definition of the communication::mpi_communicator_backend class
  * @date 2024-10-26
  * 
  */
 
+#include <xmipp4/core/communication/communicator_backend.hpp>
+
 #include <memory>
+
+#include <mpi.h>
 
 namespace xmipp4 
 {
-namespace compute
+namespace communication
 {
 
-class mpi_instance
+class mpi_communicator;
+
+class mpi_communicator_backend final
+    : public communicator_backend
 {
 public:
-    mpi_instance(const mpi_instance &other) = delete;
-    mpi_instance(mpi_instance &&other) = delete;
-    ~mpi_instance();
+    mpi_communicator_backend() = default;
+    mpi_communicator_backend(const mpi_communicator_backend &other) = delete;
+    mpi_communicator_backend(mpi_communicator_backend &&other) = delete;
+    virtual ~mpi_communicator_backend() = default;
 
-    mpi_instance& operator=(const mpi_instance &other) = delete;
-    mpi_instance& operator=(mpi_instance &&other) = delete;
+    mpi_communicator_backend& operator=(const mpi_communicator_backend &other) = delete;
+    mpi_communicator_backend& operator=(mpi_communicator_backend &&other) = delete;
 
-    static mpi_instance& get();
-
-private:
-    static std::unique_ptr<mpi_instance> m_singleton;
-    
-    mpi_instance();
-
+    const std::string& get_name() const noexcept override;
+    version get_version() const noexcept override;
+    bool is_available() const noexcept override;
+    std::shared_ptr<communicator> get_world_communicator() const override;
 
 };
 
-} // namespace compute
+} // namespace communication
 } // namespace xmipp4
-

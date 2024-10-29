@@ -19,46 +19,31 @@
  ***************************************************************************/
 
 /**
- * @file mpi_instance.cpp
+ * @file mpi_operation.cpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Implementation of mpi_instance.hpp
+ * @brief Implementation of mpi_operation.hpp
  * @date 2024-10-26
  * 
  */
 
-#include "mpi_instance.hpp"
-
-#include <xmipp4/core/platform/assert.hpp>
-
-#include <mpi.h>
+#include "mpi_operation.hpp"
 
 namespace xmipp4 
 {
-namespace compute
+namespace communication
 {
 
-std::unique_ptr<mpi_instance> mpi_instance::m_singleton;
-
-mpi_instance::mpi_instance()
+MPI_Op to_mpi(reduction_operation op) noexcept
 {
-    MPI_Init(nullptr, nullptr);
-}
-
-mpi_instance::~mpi_instance()
-{
-    MPI_Finalize();
-}
-
-mpi_instance& mpi_instance::get()
-{
-    if(!m_singleton)
+    switch (op)
     {
-        m_singleton = std::unique_ptr<mpi_instance>(new mpi_instance());
+    case reduction_operation::sum: return MPI_SUM;
+    case reduction_operation::product: return MPI_PROD;
+    case reduction_operation::min: return MPI_MIN;
+    case reduction_operation::max: return MPI_MAX;
+    default: return MPI_OP_NULL;
     }
-
-    XMIPP4_ASSERT(m_singleton);
-    return *m_singleton;
 }
 
-} // namespace compute
+} // namespace communication
 } // namespace xmipp4

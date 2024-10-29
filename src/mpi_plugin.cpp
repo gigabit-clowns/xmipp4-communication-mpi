@@ -27,15 +27,15 @@
  */
 
 #include "mpi_plugin.hpp"
-#include "compute/mpi_host_communicator_backend.hpp"
+#include "communication/mpi/mpi_communicator_backend.hpp"
 
 #include <xmipp4/core/interface_registry.hpp>
-#include <xmipp4/core/compute/host_communicator_manager.hpp>
+#include <xmipp4/core/communication/communicator_manager.hpp>
 
 namespace xmipp4 
 {
 
-const std::string mpi_plugin::name = "xmipp4-compute-mpi";
+const std::string mpi_plugin::name = "xmipp4-communication-mpi";
 
 const std::string& mpi_plugin::get_name() const noexcept
 {
@@ -53,11 +53,11 @@ version mpi_plugin::get_version() const noexcept
 
 void mpi_plugin::register_at(interface_registry& registry) const
 {
-    auto& host_communicator_manager = 
-        registry.get_interface_manager<compute::host_communicator_manager>();
+    auto& communicator_manager = 
+        registry.get_interface_manager<communication::communicator_manager>();
     
-    host_communicator_manager.register_backend(
-        std::make_unique<compute::mpi_host_communicator_backend>()
+    communicator_manager.register_backend(
+        std::make_unique<communication::mpi_communicator_backend>()
     );
 }
 

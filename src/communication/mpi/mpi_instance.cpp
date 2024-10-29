@@ -1,5 +1,3 @@
-#pragma once
-
 /***************************************************************************
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,27 +19,46 @@
  ***************************************************************************/
 
 /**
- * @file mpi_error.hpp
+ * @file mpi_instance.cpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Utility function to check MPI return codes
+ * @brief Implementation of mpi_instance.hpp
  * @date 2024-10-26
  * 
  */
 
-namespace xmipp4
+#include "mpi_instance.hpp"
+
+#include <xmipp4/core/platform/assert.hpp>
+
+#include <mpi.h>
+
+namespace xmipp4 
 {
-namespace compute
+namespace communication
 {
 
-/**
- * @brief Check the return code of an MPI function
- * 
- * If the error code is MPI_SUCCESSFUL this function does nothing.
- * Otherwise it throws an exception with the appropiate message.
- * 
- * @param error_code Error code returned by MPI
- */
-void mpi_check_error(int error_code);
+std::unique_ptr<mpi_instance> mpi_instance::m_singleton;
 
-} // namespace compute
+mpi_instance::mpi_instance()
+{
+    MPI_Init(nullptr, nullptr);
+}
+
+mpi_instance::~mpi_instance()
+{
+    MPI_Finalize();
+}
+
+mpi_instance& mpi_instance::get()
+{
+    if(!m_singleton)
+    {
+        m_singleton = std::unique_ptr<mpi_instance>(new mpi_instance());
+    }
+
+    XMIPP4_ASSERT(m_singleton);
+    return *m_singleton;
+}
+
+} // namespace communication
 } // namespace xmipp4
