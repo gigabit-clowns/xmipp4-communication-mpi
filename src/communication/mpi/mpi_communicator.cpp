@@ -348,7 +348,7 @@ int mpi_communicator::get_rank() const
 
 std::unique_ptr<communicator> 
 mpi_communicator::split(int colour, 
-                             int rank_priority ) const
+                        int rank_priority ) const
 {
     MPI_Comm new_communicator;
 
@@ -374,7 +374,7 @@ mpi_communicator::split(int colour,
 
 std::shared_ptr<communicator> 
 mpi_communicator::split_shared(int colour, 
-                                    int rank_priority ) const
+                               int rank_priority ) const
 {
     MPI_Comm new_communicator;
 
