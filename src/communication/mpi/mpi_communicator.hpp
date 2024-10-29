@@ -29,7 +29,6 @@
  */
 
 #include <xmipp4/core/communication/communicator.hpp>
-#include <xmipp4/core/communication/reduction_operation.hpp>
 #include <xmipp4/core/span.hpp>
 #include <xmipp4/core/memory/byte.hpp>
 
