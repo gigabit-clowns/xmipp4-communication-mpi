@@ -55,6 +55,15 @@ struct mpi_type<char>
 {
     static MPI_Datatype value() noexcept
     {
+        return MPI_CHAR;
+    }
+};
+
+template <>
+struct mpi_type<signed char>
+{
+    static MPI_Datatype value() noexcept
+    {
         return MPI_SIGNED_CHAR;
     }
 };

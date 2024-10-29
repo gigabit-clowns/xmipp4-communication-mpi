@@ -127,6 +127,7 @@ class mpi_communicator final
     : public detail::mpi_communicator_helper<mpi_communicator, 
                                                   memory::byte,
                                                   char,
+                                                  signed char,
                                                   unsigned char,
                                                   short,
                                                   unsigned short,
