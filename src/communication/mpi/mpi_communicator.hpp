@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 /**
- * @file mpi_host_communicator.hpp
+ * @file mpi_communicator.hpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Definition of the compute::mpi_host_communicator class
+ * @brief Definition of the communication::mpi_communicator class
  * @date 2024-10-26
  * 
  */
 
-#include <xmipp4/core/compute/host_communicator.hpp>
-#include <xmipp4/core/compute/reduction_operation.hpp>
+#include <xmipp4/core/communication/communicator.hpp>
+#include <xmipp4/core/communication/reduction_operation.hpp>
 #include <xmipp4/core/span.hpp>
 #include <xmipp4/core/memory/byte.hpp>
 
@@ -39,38 +39,38 @@
 
 namespace xmipp4 
 {
-namespace compute
+namespace communication
 {
 
 namespace detail
 {
 
 template<typename Comm, typename... Ts>
-class mpi_host_communicator_helper;
+class mpi_communicator_helper;
 
 template<typename Comm, typename T, typename... Ts>
-class mpi_host_communicator_helper<Comm, T, Ts...>
-    : public mpi_host_communicator_helper<Comm, Ts...>
+class mpi_communicator_helper<Comm, T, Ts...>
+    : public mpi_communicator_helper<Comm, Ts...>
 {
 public:
-    mpi_host_communicator_helper() = default;
-    mpi_host_communicator_helper(const mpi_host_communicator_helper &other) = default;
-    mpi_host_communicator_helper(mpi_host_communicator_helper &&other) = default;
-    virtual ~mpi_host_communicator_helper() = default;
+    mpi_communicator_helper() = default;
+    mpi_communicator_helper(const mpi_communicator_helper &other) = default;
+    mpi_communicator_helper(mpi_communicator_helper &&other) = default;
+    virtual ~mpi_communicator_helper() = default;
 
-    mpi_host_communicator_helper& operator=(const mpi_host_communicator_helper &other) = default;
-    mpi_host_communicator_helper& operator=(mpi_host_communicator_helper &&other) = default;
+    mpi_communicator_helper& operator=(const mpi_communicator_helper &other) = default;
+    mpi_communicator_helper& operator=(mpi_communicator_helper &&other) = default;
 
-    using mpi_host_communicator_helper<Comm, Ts...>::send;
-    using mpi_host_communicator_helper<Comm, Ts...>::receive;
-    using mpi_host_communicator_helper<Comm, Ts...>::send_receive;
-    using mpi_host_communicator_helper<Comm, Ts...>::broadcast;
-    using mpi_host_communicator_helper<Comm, Ts...>::scatter;
-    using mpi_host_communicator_helper<Comm, Ts...>::gather;
-    using mpi_host_communicator_helper<Comm, Ts...>::all_gather;
-    using mpi_host_communicator_helper<Comm, Ts...>::reduce;
-    using mpi_host_communicator_helper<Comm, Ts...>::all_reduce;
-    using mpi_host_communicator_helper<Comm, Ts...>::all_to_all;
+    using mpi_communicator_helper<Comm, Ts...>::send;
+    using mpi_communicator_helper<Comm, Ts...>::receive;
+    using mpi_communicator_helper<Comm, Ts...>::send_receive;
+    using mpi_communicator_helper<Comm, Ts...>::broadcast;
+    using mpi_communicator_helper<Comm, Ts...>::scatter;
+    using mpi_communicator_helper<Comm, Ts...>::gather;
+    using mpi_communicator_helper<Comm, Ts...>::all_gather;
+    using mpi_communicator_helper<Comm, Ts...>::reduce;
+    using mpi_communicator_helper<Comm, Ts...>::all_reduce;
+    using mpi_communicator_helper<Comm, Ts...>::all_to_all;
 
     void send(int destination_rank, span<const T> buf) final;
 
@@ -104,17 +104,17 @@ private:
 };
 
 template<typename Comm>
-class mpi_host_communicator_helper<Comm>
-    : public host_communicator
+class mpi_communicator_helper<Comm>
+    : public communicator
 {
 public:
-    mpi_host_communicator_helper() = default;
-    mpi_host_communicator_helper(const mpi_host_communicator_helper &other) = default;
-    mpi_host_communicator_helper(mpi_host_communicator_helper &&other) = default;
-    virtual ~mpi_host_communicator_helper() = default;
+    mpi_communicator_helper() = default;
+    mpi_communicator_helper(const mpi_communicator_helper &other) = default;
+    mpi_communicator_helper(mpi_communicator_helper &&other) = default;
+    virtual ~mpi_communicator_helper() = default;
 
-    mpi_host_communicator_helper& operator=(const mpi_host_communicator_helper &other) = default;
-    mpi_host_communicator_helper& operator=(mpi_host_communicator_helper &&other) = default;
+    mpi_communicator_helper& operator=(const mpi_communicator_helper &other) = default;
+    mpi_communicator_helper& operator=(mpi_communicator_helper &&other) = default;
 
 };
 
@@ -124,8 +124,8 @@ public:
 
 
 
-class mpi_host_communicator final
-    : public detail::mpi_host_communicator_helper<mpi_host_communicator, 
+class mpi_communicator final
+    : public detail::mpi_communicator_helper<mpi_communicator, 
                                                   memory::byte,
                                                   char,
                                                   unsigned char,
@@ -142,29 +142,29 @@ class mpi_host_communicator final
                                                   long double>
 {
 public:
-    mpi_host_communicator() noexcept;
-    mpi_host_communicator(MPI_Comm mpi_communicator) noexcept;
-    mpi_host_communicator(const mpi_host_communicator &other) = delete;
-    mpi_host_communicator(mpi_host_communicator &&other) noexcept;
-    virtual ~mpi_host_communicator();
+    mpi_communicator() noexcept;
+    mpi_communicator(MPI_Comm mpi_communicator) noexcept;
+    mpi_communicator(const mpi_communicator &other) = delete;
+    mpi_communicator(mpi_communicator &&other) noexcept;
+    virtual ~mpi_communicator();
 
-    mpi_host_communicator& operator=(const mpi_host_communicator &other) = delete;
-    mpi_host_communicator& operator=(mpi_host_communicator &&other) noexcept;
+    mpi_communicator& operator=(const mpi_communicator &other) = delete;
+    mpi_communicator& operator=(mpi_communicator &&other) noexcept;
 
     MPI_Comm get_handle() noexcept;
 
     void reset() noexcept;
-    void swap(mpi_host_communicator &other) noexcept;
+    void swap(mpi_communicator &other) noexcept;
 
     std::size_t get_size() const override;
 
     int get_rank() const override;
 
-    std::unique_ptr<host_communicator> split(int colour, 
-                                             int rank_priority ) const override;
+    std::unique_ptr<communicator> split(int colour, 
+                                        int rank_priority ) const override;
 
-    std::shared_ptr<host_communicator> split_shared(int colour, 
-                                                    int rank_priority ) const override;
+    std::shared_ptr<communicator> split_shared(int colour, 
+                                               int rank_priority ) const override;
 
     void barrier() override;
 
@@ -173,5 +173,5 @@ private:
 
 };
 
-} // namespace compute
+} // namespace communication
 } // namespace xmipp4

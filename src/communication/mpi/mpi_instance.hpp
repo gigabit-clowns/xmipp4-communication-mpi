@@ -1,3 +1,5 @@
+#pragma once
+
 /***************************************************************************
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,33 +21,38 @@
  ***************************************************************************/
 
 /**
- * @file mpi_error.cpp
+ * @file mpi_instance.hpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Implementation of mpi_error.hpp
+ * @brief Provides the communication::mpi_instance class.
  * @date 2024-10-26
  * 
  */
 
-#include "mpi_error.hpp"
-
-#include <mpi.h>
-#include <stdexcept>
+#include <memory>
 
 namespace xmipp4 
 {
-namespace compute
+namespace communication
 {
 
-void mpi_check_error(int error_code)
+class mpi_instance
 {
-    if (error_code != MPI_SUCCESS)
-    {
-        char message[MPI_MAX_ERROR_STRING];
-        int count = 0;
-        MPI_Error_string(error_code, message, &count);
-        throw std::runtime_error(message);
-    }
-}
+public:
+    mpi_instance(const mpi_instance &other) = delete;
+    mpi_instance(mpi_instance &&other) = delete;
+    ~mpi_instance();
 
-} // namespace compute
+    mpi_instance& operator=(const mpi_instance &other) = delete;
+    mpi_instance& operator=(mpi_instance &&other) = delete;
+
+    static mpi_instance& get();
+
+private:
+    static std::unique_ptr<mpi_instance> m_singleton;
+    
+    mpi_instance();
+
+};
+
+} // namespace communication
 } // namespace xmipp4

@@ -21,23 +21,27 @@
  ***************************************************************************/
 
 /**
- * @file mpi_operation.hpp
+ * @file mpi_error.hpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Operation conversion to MPI
+ * @brief Utility function to check MPI return codes
  * @date 2024-10-26
  * 
  */
 
-#include <xmipp4/core/compute/reduction_operation.hpp>
-
-#include <mpi.h>
-
 namespace xmipp4
 {
-namespace compute
+namespace communication
 {
 
-MPI_Op to_mpi(reduction_operation op) noexcept;
+/**
+ * @brief Check the return code of an MPI function
+ * 
+ * If the error code is MPI_SUCCESSFUL this function does nothing.
+ * Otherwise it throws an exception with the appropiate message.
+ * 
+ * @param error_code Error code returned by MPI
+ */
+void mpi_check_error(int error_code);
 
-} // namespace compute
+} // namespace communication
 } // namespace xmipp4

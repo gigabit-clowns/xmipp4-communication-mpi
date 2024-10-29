@@ -19,31 +19,33 @@
  ***************************************************************************/
 
 /**
- * @file mpi_operation.cpp
+ * @file mpi_error.cpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Implementation of mpi_operation.hpp
+ * @brief Implementation of mpi_error.hpp
  * @date 2024-10-26
  * 
  */
 
-#include "mpi_operation.hpp"
+#include "mpi_error.hpp"
+
+#include <mpi.h>
+#include <stdexcept>
 
 namespace xmipp4 
 {
-namespace compute
+namespace communication
 {
 
-MPI_Op to_mpi(reduction_operation op) noexcept
+void mpi_check_error(int error_code)
 {
-    switch (op)
+    if (error_code != MPI_SUCCESS)
     {
-    case reduction_operation::sum: return MPI_SUM;
-    case reduction_operation::product: return MPI_PROD;
-    case reduction_operation::min: return MPI_MIN;
-    case reduction_operation::max: return MPI_MAX;
-    default: return MPI_OP_NULL;
+        char message[MPI_MAX_ERROR_STRING];
+        int count = 0;
+        MPI_Error_string(error_code, message, &count);
+        throw std::runtime_error(message);
     }
 }
 
-} // namespace compute
+} // namespace communication
 } // namespace xmipp4

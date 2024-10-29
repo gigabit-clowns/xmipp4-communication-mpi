@@ -35,7 +35,7 @@
 
 namespace xmipp4
 {
-namespace compute
+namespace communication
 {
 
 template <typename T>
@@ -167,5 +167,5 @@ struct mpi_type<long double>
     }
 };
 
-} // namespace compute
+} // namespace communication
 } // namespace xmipp4

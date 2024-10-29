@@ -19,14 +19,14 @@
  ***************************************************************************/
 
 /**
- * @file mpi_host_communicator.cpp
+ * @file mpi_communicator.cpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Implementation of mpi_host_communicator.hpp
+ * @brief Implementation of mpi_communicator.hpp
  * @date 2024-10-26
  * 
  */
 
-#include "mpi_host_communicator.hpp"
+#include "mpi_communicator.hpp"
 
 #include "mpi_error.hpp"
 #include "mpi_type.hpp"
@@ -36,13 +36,13 @@
 
 namespace xmipp4 
 {
-namespace compute
+namespace communication
 {
 namespace detail
 {
 
 template<typename Comm, typename T, typename... Ts>
-void mpi_host_communicator_helper<Comm, T, Ts...>::send(int destination_rank, 
+void mpi_communicator_helper<Comm, T, Ts...>::send(int destination_rank, 
                                                         span<const T> buf )
 {
     const auto error = MPI_Send(
@@ -54,7 +54,7 @@ void mpi_host_communicator_helper<Comm, T, Ts...>::send(int destination_rank,
 
 template<typename Comm, typename T, typename... Ts>
 std::size_t 
-mpi_host_communicator_helper<Comm, T, Ts...>::receive(int source_rank, 
+mpi_communicator_helper<Comm, T, Ts...>::receive(int source_rank, 
                                                       span<T> buf)
 {
     MPI_Status status;
@@ -72,7 +72,7 @@ mpi_host_communicator_helper<Comm, T, Ts...>::receive(int source_rank,
 
 template<typename Comm, typename T, typename... Ts>
 std::size_t 
-mpi_host_communicator_helper<Comm, T, Ts...>::send_receive(int destination_rank, 
+mpi_communicator_helper<Comm, T, Ts...>::send_receive(int destination_rank, 
                                                            span<const T> send_buf,
                                                            int source_rank, 
                                                            span<T> receive_buf )
@@ -93,7 +93,7 @@ mpi_host_communicator_helper<Comm, T, Ts...>::send_receive(int destination_rank,
 }
 
 template<typename Comm, typename T, typename... Ts>
-void mpi_host_communicator_helper<Comm, T, Ts...>::broadcast(int root, span<T> buf)
+void mpi_communicator_helper<Comm, T, Ts...>::broadcast(int root, span<T> buf)
 {
     const auto error = MPI_Bcast(
         buf.data(), static_cast<int>(buf.size()), mpi_type<T>::value(), root,
@@ -104,7 +104,7 @@ void mpi_host_communicator_helper<Comm, T, Ts...>::broadcast(int root, span<T> b
 }
 
 template<typename Comm, typename T, typename... Ts>
-void mpi_host_communicator_helper<Comm, T, Ts...>::scatter(int root, 
+void mpi_communicator_helper<Comm, T, Ts...>::scatter(int root, 
                                                            span<const T> send_buf, 
                                                            span<T> recv_buf )
 {
@@ -129,7 +129,7 @@ void mpi_host_communicator_helper<Comm, T, Ts...>::scatter(int root,
 }
 
 template<typename Comm, typename T, typename... Ts>
-void mpi_host_communicator_helper<Comm, T, Ts...>::gather(int root, 
+void mpi_communicator_helper<Comm, T, Ts...>::gather(int root, 
                                                            span<const T> send_buf, 
                                                            span<T> recv_buf )
 {
@@ -154,7 +154,7 @@ void mpi_host_communicator_helper<Comm, T, Ts...>::gather(int root,
 }
 
 template<typename Comm, typename T, typename... Ts>
-void mpi_host_communicator_helper<Comm, T, Ts...>::all_gather(span<const T> send_buf, 
+void mpi_communicator_helper<Comm, T, Ts...>::all_gather(span<const T> send_buf, 
                                                               span<T> recv_buf )
 {
     int error;
@@ -178,7 +178,7 @@ void mpi_host_communicator_helper<Comm, T, Ts...>::all_gather(span<const T> send
 }
 
 template<typename Comm, typename T, typename... Ts>
-void mpi_host_communicator_helper<Comm, T, Ts...>::reduce(int root, 
+void mpi_communicator_helper<Comm, T, Ts...>::reduce(int root, 
                                                           reduction_operation op,
                                                           span<const T> send_buf, 
                                                           span<T> recv_buf )
@@ -207,7 +207,7 @@ void mpi_host_communicator_helper<Comm, T, Ts...>::reduce(int root,
 }
 
 template<typename Comm, typename T, typename... Ts>
-void mpi_host_communicator_helper<Comm, T, Ts...>::all_reduce(reduction_operation op,
+void mpi_communicator_helper<Comm, T, Ts...>::all_reduce(reduction_operation op,
                                                               span<const T> send_buf, 
                                                               span<T> recv_buf )
 {
@@ -237,7 +237,7 @@ void mpi_host_communicator_helper<Comm, T, Ts...>::all_reduce(reduction_operatio
 }
 
 template<typename Comm, typename T, typename... Ts>
-void mpi_host_communicator_helper<Comm, T, Ts...>::all_to_all(span<const T> send_buf, 
+void mpi_communicator_helper<Comm, T, Ts...>::all_to_all(span<const T> send_buf, 
                                                               span<T> recv_buf )
 {
     int error;
@@ -261,13 +261,13 @@ void mpi_host_communicator_helper<Comm, T, Ts...>::all_to_all(span<const T> send
 }
 
 template<typename Comm, typename T, typename... Ts>
-int mpi_host_communicator_helper<Comm, T, Ts...>::get_rank() const
+int mpi_communicator_helper<Comm, T, Ts...>::get_rank() const
 {
     return static_cast<const Comm*>(this)->get_rank();
 }
 
 template<typename Comm, typename T, typename... Ts>
-MPI_Comm mpi_host_communicator_helper<Comm, T, Ts...>::get_communicator() noexcept
+MPI_Comm mpi_communicator_helper<Comm, T, Ts...>::get_communicator() noexcept
 {
     return static_cast<Comm*>(this)->get_handle();
 }
@@ -278,41 +278,41 @@ MPI_Comm mpi_host_communicator_helper<Comm, T, Ts...>::get_communicator() noexce
 
 
 
-mpi_host_communicator::mpi_host_communicator() noexcept
-    : mpi_host_communicator(MPI_COMM_NULL)
+mpi_communicator::mpi_communicator() noexcept
+    : mpi_communicator(MPI_COMM_NULL)
 {
 }
 
-mpi_host_communicator::mpi_host_communicator(MPI_Comm mpi_communicator) noexcept
+mpi_communicator::mpi_communicator(MPI_Comm mpi_communicator) noexcept
     : m_communicator(mpi_communicator)
 {
 }
 
-mpi_host_communicator::mpi_host_communicator(mpi_host_communicator &&other) noexcept
+mpi_communicator::mpi_communicator(mpi_communicator &&other) noexcept
     : m_communicator(other.m_communicator)
 {
     other.m_communicator = MPI_COMM_NULL;
 }
 
-mpi_host_communicator::~mpi_host_communicator()
+mpi_communicator::~mpi_communicator()
 {
     reset();
 }
 
-mpi_host_communicator& 
-mpi_host_communicator::operator=(mpi_host_communicator &&other) noexcept
+mpi_communicator& 
+mpi_communicator::operator=(mpi_communicator &&other) noexcept
 {
     swap(other);
     other.reset();
     return *this;
 }
     
-MPI_Comm mpi_host_communicator::get_handle() noexcept
+MPI_Comm mpi_communicator::get_handle() noexcept
 {
     return m_communicator;   
 }
 
-void mpi_host_communicator::reset() noexcept
+void mpi_communicator::reset() noexcept
 {
     if (m_communicator != MPI_COMM_NULL && m_communicator != MPI_COMM_WORLD)
     {
@@ -321,12 +321,12 @@ void mpi_host_communicator::reset() noexcept
     m_communicator = MPI_COMM_NULL;
 }
 
-void mpi_host_communicator::swap(mpi_host_communicator &other) noexcept
+void mpi_communicator::swap(mpi_communicator &other) noexcept
 {
     std::swap(m_communicator, other.m_communicator);
 }
 
-std::size_t mpi_host_communicator::get_size() const
+std::size_t mpi_communicator::get_size() const
 {
     int result;
     
@@ -336,7 +336,7 @@ std::size_t mpi_host_communicator::get_size() const
     return result;
 }
 
-int mpi_host_communicator::get_rank() const
+int mpi_communicator::get_rank() const
 {
     int result;
     
@@ -346,8 +346,8 @@ int mpi_host_communicator::get_rank() const
     return result;
 }
 
-std::unique_ptr<host_communicator> 
-mpi_host_communicator::split(int colour, 
+std::unique_ptr<communicator> 
+mpi_communicator::split(int colour, 
                              int rank_priority ) const
 {
     MPI_Comm new_communicator;
@@ -361,7 +361,7 @@ mpi_host_communicator::split(int colour,
 
     try
     {
-        return std::make_unique<mpi_host_communicator>(new_communicator);
+        return std::make_unique<mpi_communicator>(new_communicator);
     }
     catch(...)
     {
@@ -372,8 +372,8 @@ mpi_host_communicator::split(int colour,
     }
 }
 
-std::shared_ptr<host_communicator> 
-mpi_host_communicator::split_shared(int colour, 
+std::shared_ptr<communicator> 
+mpi_communicator::split_shared(int colour, 
                                     int rank_priority ) const
 {
     MPI_Comm new_communicator;
@@ -387,7 +387,7 @@ mpi_host_communicator::split_shared(int colour,
 
     try
     {
-        return std::make_shared<mpi_host_communicator>(new_communicator);
+        return std::make_shared<mpi_communicator>(new_communicator);
     }
     catch(...)
     {
@@ -399,11 +399,11 @@ mpi_host_communicator::split_shared(int colour,
 }
 
 
-void mpi_host_communicator::barrier()
+void mpi_communicator::barrier()
 {
     const auto error = MPI_Barrier(m_communicator);
     mpi_check_error(error);
 }
 
-} // namespace compute
+} // namespace communication
 } // namespace xmipp4

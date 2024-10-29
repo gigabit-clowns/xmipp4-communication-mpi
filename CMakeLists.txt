@@ -24,7 +24,7 @@ cmake_minimum_required(VERSION 3.16)
 
 # Define the project
 project(
-  xmipp4-compute-mpi
+  xmipp4-communication-mpi
 	VERSION 0.1.0 
 	LANGUAGES C CXX
 )

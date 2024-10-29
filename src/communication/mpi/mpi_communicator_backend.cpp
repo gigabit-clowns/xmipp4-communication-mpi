@@ -1,5 +1,3 @@
-#pragma once
-
 /***************************************************************************
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,44 +19,50 @@
  ***************************************************************************/
 
 /**
- * @file mpi_host_communicator_backend.hpp
+ * @file mpi_communicator_backend.cpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Definition of the compute::mpi_host_communicator_backend class
+ * @brief Implementation of mpi_communicator_backend.hpp
  * @date 2024-10-26
  * 
  */
 
-#include <xmipp4/core/compute/host_communicator_backend.hpp>
+#include "mpi_communicator_backend.hpp"
 
-#include <memory>
+#include "mpi_instance.hpp"
+#include "mpi_communicator.hpp"
 
 #include <mpi.h>
 
 namespace xmipp4 
 {
-namespace compute
+namespace communication
 {
 
-class mpi_host_communicator;
-
-class mpi_host_communicator_backend final
-    : public host_communicator_backend
+const std::string& mpi_communicator_backend::get_name() const noexcept
 {
-public:
-    mpi_host_communicator_backend() = default;
-    mpi_host_communicator_backend(const mpi_host_communicator_backend &other) = delete;
-    mpi_host_communicator_backend(mpi_host_communicator_backend &&other) = delete;
-    virtual ~mpi_host_communicator_backend() = default;
+    static const std::string name = "mpi";
+    return name;
+}
 
-    mpi_host_communicator_backend& operator=(const mpi_host_communicator_backend &other) = delete;
-    mpi_host_communicator_backend& operator=(mpi_host_communicator_backend &&other) = delete;
+version mpi_communicator_backend::get_version() const noexcept
+{
+    int major = 0;
+    int minor = 0;
+    MPI_Get_version(&major, &minor);
+    return version(major, minor, 0);
+}
 
-    const std::string& get_name() const noexcept override;
-    version get_version() const noexcept override;
-    bool is_available() const noexcept override;
-    std::shared_ptr<host_communicator> get_world_communicator() const override;
+bool mpi_communicator_backend::is_available() const noexcept
+{
+    return true;
+}
 
-};
+std::shared_ptr<communicator> 
+mpi_communicator_backend::get_world_communicator() const
+{
+    mpi_instance::get(); // Ensure MPI is initialized
+    return std::make_shared<mpi_communicator>(MPI_COMM_WORLD);
+}
 
-} // namespace compute
+} // namespace communication
 } // namespace xmipp4
