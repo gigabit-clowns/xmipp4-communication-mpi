@@ -43,7 +43,7 @@ namespace detail
 
 template<typename Comm, typename T, typename... Ts>
 void mpi_communicator_helper<Comm, T, Ts...>::send(int destination_rank, 
-                                                        span<const T> buf )
+                                                   span<const T> buf )
 {
     const auto error = MPI_Send(
         buf.data(), static_cast<int>(buf.size()), mpi_type<T>::value(), 
@@ -55,7 +55,7 @@ void mpi_communicator_helper<Comm, T, Ts...>::send(int destination_rank,
 template<typename Comm, typename T, typename... Ts>
 std::size_t 
 mpi_communicator_helper<Comm, T, Ts...>::receive(int source_rank, 
-                                                      span<T> buf)
+                                                 span<T> buf)
 {
     MPI_Status status;
     const auto error = MPI_Recv(
@@ -73,9 +73,9 @@ mpi_communicator_helper<Comm, T, Ts...>::receive(int source_rank,
 template<typename Comm, typename T, typename... Ts>
 std::size_t 
 mpi_communicator_helper<Comm, T, Ts...>::send_receive(int destination_rank, 
-                                                           span<const T> send_buf,
-                                                           int source_rank, 
-                                                           span<T> receive_buf )
+                                                      span<const T> send_buf,
+                                                      int source_rank, 
+                                                      span<T> receive_buf )
 {
     MPI_Status status;
     const auto error = MPI_Sendrecv(
@@ -105,8 +105,8 @@ void mpi_communicator_helper<Comm, T, Ts...>::broadcast(int root, span<T> buf)
 
 template<typename Comm, typename T, typename... Ts>
 void mpi_communicator_helper<Comm, T, Ts...>::scatter(int root, 
-                                                           span<const T> send_buf, 
-                                                           span<T> recv_buf )
+                                                      span<const T> send_buf, 
+                                                      span<T> recv_buf )
 {
     int error;
     if(send_buf.data() == recv_buf.data() && root == get_rank())
@@ -130,8 +130,8 @@ void mpi_communicator_helper<Comm, T, Ts...>::scatter(int root,
 
 template<typename Comm, typename T, typename... Ts>
 void mpi_communicator_helper<Comm, T, Ts...>::gather(int root, 
-                                                           span<const T> send_buf, 
-                                                           span<T> recv_buf )
+                                                     span<const T> send_buf, 
+                                                     span<T> recv_buf )
 {
     int error;
     if(send_buf.data() == recv_buf.data() && root == get_rank())
@@ -155,7 +155,7 @@ void mpi_communicator_helper<Comm, T, Ts...>::gather(int root,
 
 template<typename Comm, typename T, typename... Ts>
 void mpi_communicator_helper<Comm, T, Ts...>::all_gather(span<const T> send_buf, 
-                                                              span<T> recv_buf )
+                                                         span<T> recv_buf )
 {
     int error;
     if(send_buf.data() == recv_buf.data())
@@ -179,9 +179,9 @@ void mpi_communicator_helper<Comm, T, Ts...>::all_gather(span<const T> send_buf,
 
 template<typename Comm, typename T, typename... Ts>
 void mpi_communicator_helper<Comm, T, Ts...>::reduce(int root, 
-                                                          reduction_operation op,
-                                                          span<const T> send_buf, 
-                                                          span<T> recv_buf )
+                                                     reduction_operation op,
+                                                     span<const T> send_buf, 
+                                                     span<T> recv_buf )
 {
     if (send_buf.size() != recv_buf.size())
     {
@@ -208,8 +208,8 @@ void mpi_communicator_helper<Comm, T, Ts...>::reduce(int root,
 
 template<typename Comm, typename T, typename... Ts>
 void mpi_communicator_helper<Comm, T, Ts...>::all_reduce(reduction_operation op,
-                                                              span<const T> send_buf, 
-                                                              span<T> recv_buf )
+                                                         span<const T> send_buf, 
+                                                         span<T> recv_buf )
 {
 
     if (send_buf.size() != recv_buf.size())
@@ -238,7 +238,7 @@ void mpi_communicator_helper<Comm, T, Ts...>::all_reduce(reduction_operation op,
 
 template<typename Comm, typename T, typename... Ts>
 void mpi_communicator_helper<Comm, T, Ts...>::all_to_all(span<const T> send_buf, 
-                                                              span<T> recv_buf )
+                                                         span<T> recv_buf )
 {
     int error;
     if(send_buf.data() == recv_buf.data())

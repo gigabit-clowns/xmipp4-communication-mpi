@@ -29,7 +29,6 @@
  */
 
 #include <xmipp4/core/communication/communicator.hpp>
-#include <xmipp4/core/communication/reduction_operation.hpp>
 #include <xmipp4/core/span.hpp>
 #include <xmipp4/core/memory/byte.hpp>
 
@@ -128,6 +127,7 @@ class mpi_communicator final
     : public detail::mpi_communicator_helper<mpi_communicator, 
                                                   memory::byte,
                                                   char,
+                                                  signed char,
                                                   unsigned char,
                                                   short,
                                                   unsigned short,

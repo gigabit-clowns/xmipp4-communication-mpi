@@ -28,7 +28,7 @@
  * 
  */
 
-#include <xmipp4/core/communication/reduction_operation.hpp>
+#include <xmipp4/core/reduction_operation.hpp>
 
 #include <mpi.h>
 

@@ -60,6 +60,7 @@ target_link_libraries(
 		xmipp4-core
 		Catch2::Catch2WithMain
 )
+add_dependencies(${TESTS_NAME} ${PROJECT_NAME})
 
 # On windows targets, copy the library to the test directory
 if(WIN32)
