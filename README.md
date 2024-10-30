@@ -1,2 +1,2 @@
-# xmipp4-compute-mpi
+# xmipp4-communication-mpi
 MPI Collective Communications library for xmipp4

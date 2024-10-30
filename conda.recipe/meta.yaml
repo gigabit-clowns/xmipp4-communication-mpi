@@ -24,7 +24,7 @@
 # https://github.com/pybind/cmake_example/blob/master/conda.recipe/meta.yaml
 
 package:
-  name: xmipp4-compute-mpi
+  name: xmipp4-communication-mpi
   version: "0.1.0"
 
 about:
@@ -39,6 +39,7 @@ requirements:
     - python
     - pip
     - scikit-build-core
+    - openmpi>=3
     - xmipp4-core=0.1
 
   build:
@@ -49,7 +50,3 @@ requirements:
 
 build:
   number: 0
-
-test:
-  commands:
-    - xmipp4-core_tests
