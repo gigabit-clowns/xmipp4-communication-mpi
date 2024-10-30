@@ -58,6 +58,9 @@ public:
     bool is_available() const noexcept override;
     std::shared_ptr<communicator> get_world_communicator() const override;
 
+private:
+    static const std::string m_name;
+
 };
 
 } // namespace communication

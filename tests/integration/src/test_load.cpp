@@ -52,9 +52,9 @@ TEST_CASE( "load and register xmipp4-communication-mpi plugin", "[communication-
 {
     plugin_manager manager;
 
-    
     const auto* mpi_plugin = 
         manager.load_plugin(get_mpi_plugin_path());
+
     REQUIRE( mpi_plugin != nullptr );
     REQUIRE( mpi_plugin->get_name() == "xmipp4-communication-mpi" );
 
