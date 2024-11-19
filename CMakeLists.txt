@@ -43,6 +43,7 @@ endif()
 
 # Find dependencies
 find_package(MPI 3 COMPONENTS CXX REQUIRED)
+find_package(Threads REQUIRED)
 
 # Find all source and header files
 file(
