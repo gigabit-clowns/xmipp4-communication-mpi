@@ -38,14 +38,6 @@ class mpi_plugin final
     : public plugin
 {
 public:
-    mpi_plugin() = default;
-    mpi_plugin(const mpi_plugin& other) = default;
-    mpi_plugin(mpi_plugin&& other) = default;
-    virtual ~mpi_plugin() = default;
-
-    mpi_plugin& operator=(const mpi_plugin& other) = default;
-    mpi_plugin& operator=(mpi_plugin&& other) = default;
-
     const std::string& get_name() const noexcept override;
     version get_version() const noexcept override;
     void register_at(interface_registry& registry) const override;
