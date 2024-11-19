@@ -126,10 +126,10 @@ class mpi_communicator final
 {
 public:
     mpi_communicator() noexcept;
-    mpi_communicator(MPI_Comm mpi_communicator) noexcept;
+    explicit mpi_communicator(MPI_Comm mpi_communicator) noexcept;
     mpi_communicator(const mpi_communicator &other) = delete;
     mpi_communicator(mpi_communicator &&other) noexcept;
-    virtual ~mpi_communicator();
+    virtual ~mpi_communicator() override;
 
     mpi_communicator& operator=(const mpi_communicator &other) = delete;
     mpi_communicator& operator=(mpi_communicator &&other) noexcept;
