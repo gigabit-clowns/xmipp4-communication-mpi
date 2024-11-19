@@ -66,6 +66,7 @@ target_compile_definitions(
 		VERSION_MAJOR=${CMAKE_PROJECT_VERSION_MAJOR}
 		VERSION_MINOR=${CMAKE_PROJECT_VERSION_MINOR}
 		VERSION_PATCH=${CMAKE_PROJECT_VERSION_PATCH}
+		OMPI_SKIP_MPICXX # Skip C++ binding as it produces errors
 )
 target_link_libraries(
 	${PROJECT_NAME} 
