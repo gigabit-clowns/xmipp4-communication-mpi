@@ -28,8 +28,6 @@
 
 #include "mpi_error.hpp"
 
-#include <stdexcept>
-
 #include <mpi.h>
 
 namespace xmipp4 
@@ -44,7 +42,7 @@ void mpi_check_error(int error_code)
         char message[MPI_MAX_ERROR_STRING];
         int count = 0;
         MPI_Error_string(error_code, message, &count);
-        throw std::runtime_error(message);
+        throw mpi_error(message);
     }
 }
 
