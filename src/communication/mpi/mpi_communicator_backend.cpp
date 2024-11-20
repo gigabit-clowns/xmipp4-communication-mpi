@@ -38,13 +38,9 @@ namespace xmipp4
 namespace communication
 {
 
-const std::string mpi_communicator_backend::m_name = "mpi";
-
-
-
-const std::string& mpi_communicator_backend::get_name() const noexcept
+std::string mpi_communicator_backend::get_name() const noexcept
 {
-    return m_name;
+    return "mpi";
 }
 
 version mpi_communicator_backend::get_version() const noexcept
@@ -58,6 +54,11 @@ version mpi_communicator_backend::get_version() const noexcept
 bool mpi_communicator_backend::is_available() const noexcept
 {
     return true;
+}
+
+backend_priority mpi_communicator_backend::get_priority() const noexcept
+{
+    return backend_priority::normal;
 }
 
 std::shared_ptr<communicator> 
