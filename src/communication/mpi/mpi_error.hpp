@@ -28,10 +28,22 @@
  * 
  */
 
+#include <stdexcept>
+
 namespace xmipp4
 {
 namespace communication
 {
+
+/**
+ * @brief Exception class representing a MPI error.
+ * 
+ */
+class mpi_error
+    : public std::runtime_error
+{
+    using runtime_error::runtime_error;
+};
 
 /**
  * @brief Check the return code of an MPI function

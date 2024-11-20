@@ -41,6 +41,19 @@ namespace communication
 namespace detail
 {
 
+static std::size_t require_same_count(std::size_t send_count, 
+                                      std::size_t recv_count )
+{
+    if (send_count != recv_count)
+    {
+        throw std::invalid_argument(
+            "send and receive buffer sizes must match"
+        );
+    }
+
+    return send_count;
+}
+
 template<typename Comm, typename T, typename... Ts>
 void mpi_communicator_helper<Comm, T, Ts...>::send(int destination_rank, 
                                                    span<const T> buf )
@@ -183,23 +196,20 @@ void mpi_communicator_helper<Comm, T, Ts...>::reduce(int root,
                                                      span<const T> send_buf, 
                                                      span<T> recv_buf )
 {
-    if (send_buf.size() != recv_buf.size())
-    {
-        throw std::runtime_error("Send and receive buffers must have the same size");
-    }
+    const auto size = require_same_count(send_buf.size(), recv_buf.size());
 
     int error;
     if(send_buf.data() == recv_buf.data() && root == get_rank())
     {
         error = MPI_Reduce(
-            MPI_IN_PLACE, recv_buf.data(), static_cast<int>(send_buf.size()), 
+            MPI_IN_PLACE, recv_buf.data(), static_cast<int>(size), 
             mpi_type<T>::value(), to_mpi(op), root, get_communicator()
         );
     }
     else
     {
         error = MPI_Reduce(
-            send_buf.data(), recv_buf.data(), static_cast<int>(send_buf.size()), 
+            send_buf.data(), recv_buf.data(), static_cast<int>(size), 
             mpi_type<T>::value(), to_mpi(op), root, get_communicator()
         );
     }
@@ -211,24 +221,20 @@ void mpi_communicator_helper<Comm, T, Ts...>::all_reduce(reduction_operation op,
                                                          span<const T> send_buf, 
                                                          span<T> recv_buf )
 {
-
-    if (send_buf.size() != recv_buf.size())
-    {
-        throw std::runtime_error("Send and receive buffers must have the same size");
-    }
+    const auto size = require_same_count(send_buf.size(), recv_buf.size());
 
     int error;
     if(send_buf.data() == recv_buf.data())
     {
         error = MPI_Allreduce(
-            MPI_IN_PLACE, recv_buf.data(), static_cast<int>(send_buf.size()), 
+            MPI_IN_PLACE, recv_buf.data(), static_cast<int>(size), 
             mpi_type<T>::value(), to_mpi(op), get_communicator()
         );
     }
     else
     {
         error = MPI_Allreduce(
-            send_buf.data(), recv_buf.data(), static_cast<int>(send_buf.size()), 
+            send_buf.data(), recv_buf.data(), static_cast<int>(size), 
             mpi_type<T>::value(), to_mpi(op), get_communicator()
         );
     }
