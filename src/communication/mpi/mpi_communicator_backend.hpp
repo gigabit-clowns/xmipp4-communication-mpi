@@ -45,13 +45,11 @@ class mpi_communicator_backend final
     : public communicator_backend
 {
 public:
-    const std::string& get_name() const noexcept override;
+    std::string get_name() const noexcept override;
     version get_version() const noexcept override;
     bool is_available() const noexcept override;
+    backend_priority get_priority() const noexcept override;
     std::shared_ptr<communicator> get_world_communicator() const override;
-
-private:
-    static const std::string m_name;
 
 };
 
