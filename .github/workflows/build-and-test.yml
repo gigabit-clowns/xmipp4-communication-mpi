@@ -78,6 +78,10 @@ jobs:
         uses: ./.github/composites/install-xmipp4-core
         with:
           ref: main
+
+      - name: Cat
+        if: runner.os == 'Windows'
+        run: cat "D:/a/xmipp4-communication-mpi/xmipp4-core/dist/lib/cmake/xmipp4-core/xmipp4-core-config-version.cmake"
       
       - name: Configure and build with CMake
         uses: threeal/cmake-action@main
