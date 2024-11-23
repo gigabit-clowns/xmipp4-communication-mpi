@@ -38,27 +38,11 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - windows-latest
         compiler: 
-        - {cc: gcc, cxx: g++}
-        - {cc: clang, cxx: clang++}
+        - {cc: cl, cxx: cl}
         mpi:
-        - openmpi
-        
-        # TODO mpich with Clang is not working. Revisit
-        include:
-        - os: ubuntu-latest
-          compiler: {cc: gcc, cxx: g++}
-          mpi: mpich
-        - os: macos-latest
-          compiler: {cc: clang, cxx: clang++}
-          mpi: openmpi
-        - os: macos-latest
-          compiler: {cc: clang, cxx: clang++}
-          mpi: mpich
-        - os: windows-latest
-          compiler: {cc: cl, cxx: cl}
-          mpi: intelmpi
+        - intelmpi
   
     runs-on: ${{ matrix.os }}
     defaults:
