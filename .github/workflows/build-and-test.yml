@@ -77,7 +77,7 @@ jobs:
         id: install-xmipp4-core
         uses: ./.github/composites/install-xmipp4-core
         with:
-          ref: main
+          ref: 1e60dda01c82be1bcd8298e30437576e69f70944
       
       - name: Configure and build with CMake
         uses: threeal/cmake-action@main
