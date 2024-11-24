@@ -37,7 +37,7 @@ namespace xmipp4
 namespace communication
 {
 
-std::unique_ptr<mpi_instance> mpi_instance::m_singleton;
+std::weak_ptr<mpi_instance> mpi_instance::m_singleton;
 
 mpi_instance::mpi_instance()
 {
@@ -49,15 +49,19 @@ mpi_instance::~mpi_instance()
     MPI_Finalize();
 }
 
-mpi_instance& mpi_instance::get()
+std::shared_ptr<mpi_instance> mpi_instance::get()
 {
-    if(!m_singleton)
+    auto result = m_singleton.lock();
+
+    if(!result)
     {
-        m_singleton = std::unique_ptr<mpi_instance>(new mpi_instance());
+        result.reset(new mpi_instance());
+        m_singleton = result;
     }
 
-    XMIPP4_ASSERT(m_singleton);
-    return *m_singleton;
+    XMIPP4_ASSERT(result);
+    return result;
+
 }
 
 } // namespace communication

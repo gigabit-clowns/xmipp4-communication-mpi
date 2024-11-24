@@ -28,6 +28,8 @@
  * 
  */
 
+#include "mpi_instance.hpp"
+
 #include <xmipp4/core/communication/communicator_backend.hpp>
 
 #include <memory>
@@ -45,11 +47,24 @@ class mpi_communicator_backend final
     : public communicator_backend
 {
 public:
+    mpi_communicator_backend();
+    mpi_communicator_backend(const mpi_communicator_backend &other) = default;
+    mpi_communicator_backend(mpi_communicator_backend &&other) = default;
+    ~mpi_communicator_backend() override = default;
+
+    mpi_communicator_backend&
+    operator=(const mpi_communicator_backend &other) = default;
+    mpi_communicator_backend&
+    operator=(mpi_communicator_backend &&other) = default;
+
     std::string get_name() const noexcept override;
     version get_version() const noexcept override;
     bool is_available() const noexcept override;
     backend_priority get_priority() const noexcept override;
     std::shared_ptr<communicator> get_world_communicator() const override;
+
+private:
+    std::shared_ptr<mpi_instance> m_instance;
 
 };
 

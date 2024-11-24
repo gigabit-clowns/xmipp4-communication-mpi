@@ -45,10 +45,10 @@ public:
     mpi_instance& operator=(const mpi_instance &other) = delete;
     mpi_instance& operator=(mpi_instance &&other) = delete;
 
-    static mpi_instance& get();
+    static std::shared_ptr<mpi_instance> get();
 
 private:
-    static std::unique_ptr<mpi_instance> m_singleton;
+    static std::weak_ptr<mpi_instance> m_singleton;
     
     mpi_instance();
 
