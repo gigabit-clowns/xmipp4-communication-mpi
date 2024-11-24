@@ -38,6 +38,11 @@ namespace xmipp4
 namespace communication
 {
 
+mpi_communicator_backend::mpi_communicator_backend()
+    : m_instance(mpi_instance::get())
+{
+}
+
 std::string mpi_communicator_backend::get_name() const noexcept
 {
     return "mpi";
@@ -53,7 +58,9 @@ version mpi_communicator_backend::get_version() const noexcept
 
 bool mpi_communicator_backend::is_available() const noexcept
 {
-    return true;
+    int size = 0;
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    return size > 1;
 }
 
 backend_priority mpi_communicator_backend::get_priority() const noexcept
