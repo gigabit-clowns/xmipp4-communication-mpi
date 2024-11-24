@@ -44,7 +44,7 @@ jobs:
         - {cc: clang, cxx: clang++}
         mpi:
         - openmpi
-        
+
         # TODO mpich with Clang is not working. Revisit
         include:
         - os: ubuntu-latest
@@ -80,7 +80,7 @@ jobs:
           ref: main
       
       - name: Configure and build with CMake
-        uses: threeal/cmake-action@main
+        uses: threeal/cmake-action@v2.0.0
         with:
           source-dir: ${{ github.workspace }}
           build-dir: "${{ github.workspace }}/build"
