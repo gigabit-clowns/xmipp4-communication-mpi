@@ -57,7 +57,7 @@ jobs:
           ref: main
       
       - name: Configure and build with CMake
-        uses: threeal/cmake-action@v2
+        uses: threeal/cmake-action@main
         with:
           source-dir: ${{ github.workspace }}
           build-dir: "${{ github.workspace }}/build"

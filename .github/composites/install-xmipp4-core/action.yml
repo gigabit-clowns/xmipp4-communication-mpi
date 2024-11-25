@@ -30,7 +30,7 @@ runs:
       run: mv xmipp4-core "${{ inputs.path }}"
 
     - name: Configure and build with CMake
-      uses: threeal/cmake-action@v2
+      uses: threeal/cmake-action@main
       with:
         source-dir: "${{ inputs.path }}"
         build-dir: "${{ inputs.path }}/build"
