@@ -57,7 +57,7 @@ jobs:
           ref: main
       
       - name: Configure and build with CMake
-        uses: threeal/cmake-action@v2
+        uses: threeal/cmake-action@add-parse-args-quote-func
         with:
           source-dir: ${{ github.workspace }}
           build-dir: "${{ github.workspace }}/build"
