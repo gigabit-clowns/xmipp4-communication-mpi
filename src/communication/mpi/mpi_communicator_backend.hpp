@@ -61,7 +61,7 @@ public:
     version get_version() const noexcept override;
     bool is_available() const noexcept override;
     backend_priority get_priority() const noexcept override;
-    std::shared_ptr<communicator> get_world_communicator() const override;
+    std::shared_ptr<communicator> create_world_communicator() const override;
 
 private:
     std::shared_ptr<mpi_instance> m_instance;
