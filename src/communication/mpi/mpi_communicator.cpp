@@ -352,35 +352,8 @@ int mpi_communicator::get_rank() const
     return result;
 }
 
-std::unique_ptr<communicator> 
-mpi_communicator::split(int colour, 
-                        int rank_priority ) const
-{
-    MPI_Comm new_communicator;
-
-    const auto error = MPI_Comm_split(
-        m_communicator,
-        colour, rank_priority,
-        &new_communicator
-    );
-    mpi_check_error(error);
-
-    try
-    {
-        return std::make_unique<mpi_communicator>(new_communicator);
-    }
-    catch(...)
-    {
-        // Error ocurred creating a the new communicator.
-        // Free the resources before propagating the error.
-        MPI_Comm_free(&new_communicator);
-        throw;
-    }
-}
-
 std::shared_ptr<communicator> 
-mpi_communicator::split_shared(int colour, 
-                               int rank_priority ) const
+mpi_communicator::split(int colour, int rank_priority) const
 {
     MPI_Comm new_communicator;
 

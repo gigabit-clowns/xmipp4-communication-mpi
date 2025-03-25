@@ -69,7 +69,7 @@ backend_priority mpi_communicator_backend::get_priority() const noexcept
 }
 
 std::shared_ptr<communicator> 
-mpi_communicator_backend::get_world_communicator() const
+mpi_communicator_backend::create_world_communicator() const
 {
     mpi_instance::get(); // Ensure MPI is initialized
     return std::make_shared<mpi_communicator>(MPI_COMM_WORLD);
