@@ -51,11 +51,8 @@ jobs:
           mpi: ${{ matrix.mpi }}
 
       - name: Install xmipp4-core
-        id: install-xmipp4-core
-        uses: ./.github/composites/install-xmipp4-core
-        with:
-          ref: main
-      
+        run: pip install https://github.com/gigabit-clowns/xmipp4-core/archive/refs/heads/main.zip -vvv
+
       - name: Configure and build with CMake
         uses: threeal/cmake-action@v2
         with:
