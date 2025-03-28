@@ -49,7 +49,8 @@ public:
     mpi_instance& operator=(const mpi_instance &other) = delete;
     mpi_instance& operator=(mpi_instance &&other) = delete;
 
-    const std::shared_ptr<mpi_communicator>& get_world_communicator() const noexcept;
+    const std::shared_ptr<mpi_communicator>& 
+    get_world_communicator() const noexcept;
 
     static std::shared_ptr<mpi_instance> get();
     static version get_mpi_version();
