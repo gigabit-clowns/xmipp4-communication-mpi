@@ -31,6 +31,8 @@
 #include "mpi_instance.hpp"
 #include "mpi_communicator.hpp"
 
+#include <xmipp4/core/communication/communicator_manager.hpp>
+
 #include <mpi.h>
 
 namespace xmipp4 
@@ -79,6 +81,10 @@ mpi_communicator_backend::create_world_communicator() const
     return std::make_shared<mpi_communicator>(MPI_COMM_WORLD);
 }
 
+bool mpi_communicator_backend::register_at(communicator_manager &manager)
+{
+    return manager.register_backend(std::make_unique<mpi_communicator_backend>());
+}
 
 
 void mpi_communicator_backend::initialize() const

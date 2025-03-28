@@ -56,9 +56,7 @@ void mpi_plugin::register_at(interface_registry& registry) const
     auto& communicator_manager = 
         registry.get_interface_manager<communication::communicator_manager>();
     
-    communicator_manager.register_backend(
-        std::make_unique<communication::mpi_communicator_backend>()
-    );
+    communication::mpi_communicator_backend::register_at(communicator_manager);
 }
 
 } // namespace xmipp4
