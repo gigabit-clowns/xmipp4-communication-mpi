@@ -33,8 +33,6 @@
 
 #include <xmipp4/core/communication/communicator_manager.hpp>
 
-#include <mpi.h>
-
 namespace xmipp4 
 {
 namespace communication
@@ -47,26 +45,26 @@ std::string mpi_communicator_backend::get_name() const noexcept
 
 version mpi_communicator_backend::get_version() const noexcept
 {
-    int major = 0;
-    int minor = 0;
-    MPI_Get_version(&major, &minor); // Does not require initialization
-    return version(major, minor, 0);
+    return mpi_instance::get_mpi_version();
 }
 
 bool mpi_communicator_backend::is_available() const noexcept
 {
+    bool result;
+
     try
     {
-        initialize();
+        const auto world_size = 
+            get_instance().get_world_communicator()->get_size();
+
+        result = (world_size > 1);
     }
     catch(...)
     {
-        return false;
+        result = false;
     }
     
-    int size = 0;
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
-    return size > 1;
+    return result;
 }
 
 backend_priority mpi_communicator_backend::get_priority() const noexcept
@@ -77,8 +75,7 @@ backend_priority mpi_communicator_backend::get_priority() const noexcept
 std::shared_ptr<communicator> 
 mpi_communicator_backend::create_world_communicator() const
 {
-    initialize();
-    return std::make_shared<mpi_communicator>(MPI_COMM_WORLD);
+    return get_instance().get_world_communicator();
 }
 
 bool mpi_communicator_backend::register_at(communicator_manager &manager)
@@ -87,7 +84,7 @@ bool mpi_communicator_backend::register_at(communicator_manager &manager)
 }
 
 
-void mpi_communicator_backend::initialize() const
+mpi_instance& mpi_communicator_backend::get_instance() const
 {
     if (!m_instance)
     {
@@ -95,6 +92,7 @@ void mpi_communicator_backend::initialize() const
     }
 
     XMIPP4_ASSERT(m_instance);
+    return *m_instance;
 }
 
 } // namespace communication

@@ -69,7 +69,7 @@ public:
 private:
     mutable std::shared_ptr<mpi_instance> m_instance;
 
-    void initialize() const;
+    mpi_instance& get_instance() const;
 
 };
 
