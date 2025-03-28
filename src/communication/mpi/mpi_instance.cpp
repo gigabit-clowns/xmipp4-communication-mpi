@@ -28,6 +28,8 @@
 
 #include "mpi_instance.hpp"
 
+#include "mpi_error.hpp"
+
 #include <xmipp4/core/platform/assert.hpp>
 
 #include <mpi.h>
@@ -41,7 +43,8 @@ std::weak_ptr<mpi_instance> mpi_instance::m_singleton;
 
 mpi_instance::mpi_instance()
 {
-    MPI_Init(nullptr, nullptr);
+    const auto error = MPI_Init(nullptr, nullptr);
+    mpi_check_error(error);
 }
 
 mpi_instance::~mpi_instance()

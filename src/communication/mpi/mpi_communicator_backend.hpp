@@ -47,7 +47,7 @@ class mpi_communicator_backend final
     : public communicator_backend
 {
 public:
-    mpi_communicator_backend();
+    mpi_communicator_backend() = default;
     mpi_communicator_backend(const mpi_communicator_backend &other) = default;
     mpi_communicator_backend(mpi_communicator_backend &&other) = default;
     ~mpi_communicator_backend() override = default;
@@ -64,7 +64,9 @@ public:
     std::shared_ptr<communicator> create_world_communicator() const override;
 
 private:
-    std::shared_ptr<mpi_instance> m_instance;
+    mutable std::shared_ptr<mpi_instance> m_instance;
+
+    void initialize() const;
 
 };
 
