@@ -41,13 +41,14 @@ namespace xmipp4
 namespace communication
 {
 
+class communicator_manager;
 class mpi_communicator;
 
 class mpi_communicator_backend final
     : public communicator_backend
 {
 public:
-    mpi_communicator_backend();
+    mpi_communicator_backend() = default;
     mpi_communicator_backend(const mpi_communicator_backend &other) = default;
     mpi_communicator_backend(mpi_communicator_backend &&other) = default;
     ~mpi_communicator_backend() override = default;
@@ -63,8 +64,12 @@ public:
     backend_priority get_priority() const noexcept override;
     std::shared_ptr<communicator> create_world_communicator() const override;
 
+    static bool register_at(communicator_manager &manager);
+
 private:
-    std::shared_ptr<mpi_instance> m_instance;
+    mutable std::shared_ptr<mpi_instance> m_instance;
+
+    mpi_instance& get_instance() const;
 
 };
 
