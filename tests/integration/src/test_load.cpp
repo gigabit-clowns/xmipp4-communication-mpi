@@ -28,7 +28,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-#include <xmipp4/core/interface_registry.hpp>
+#include <xmipp4/core/interface_catalog.hpp>
 #include <xmipp4/core/plugin_manager.hpp>
 #include <xmipp4/core/plugin.hpp>
 #include <xmipp4/core/communication/communicator_manager.hpp>
@@ -58,7 +58,7 @@ TEST_CASE( "load and register xmipp4-communication-mpi plugin", "[communication-
     REQUIRE( mpi_plugin != nullptr );
     REQUIRE( mpi_plugin->get_name() == "xmipp4-communication-mpi" );
 
-    interface_registry interfaces;
+    interface_catalog interfaces;
     mpi_plugin->register_at(interfaces);
 
     auto *mpi_backend =

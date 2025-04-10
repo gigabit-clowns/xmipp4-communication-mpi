@@ -29,7 +29,7 @@
 #include "mpi_plugin.hpp"
 #include "communication/mpi/mpi_communicator_backend.hpp"
 
-#include <xmipp4/core/interface_registry.hpp>
+#include <xmipp4/core/interface_catalog.hpp>
 #include <xmipp4/core/communication/communicator_manager.hpp>
 
 namespace xmipp4 
@@ -51,10 +51,10 @@ version mpi_plugin::get_version() const noexcept
     );
 }
 
-void mpi_plugin::register_at(interface_registry& registry) const
+void mpi_plugin::register_at(interface_catalog& catalog) const
 {
     auto& communicator_manager = 
-        registry.get_interface_manager<communication::communicator_manager>();
+        catalog.get_interface_manager<communication::communicator_manager>();
     
     communication::mpi_communicator_backend::register_at(communicator_manager);
 }
