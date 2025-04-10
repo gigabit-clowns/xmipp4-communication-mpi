@@ -40,7 +40,7 @@ class mpi_plugin final
 public:
     const std::string& get_name() const noexcept override;
     version get_version() const noexcept override;
-    void register_at(interface_registry& registry) const override;
+    void register_at(interface_catalog& catalog) const override;
 
 private:
     static const std::string name;
