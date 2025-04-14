@@ -98,9 +98,14 @@ if(MSVC)
 endif()
 
 # Install library's binary files and headers
+if(WIN32)
+    set(MODULE_INSTALL_DIR ${CMAKE_INSTALL_BINDIR})
+else()
+    set(MODULE_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR})
+endif()
 install(
 	TARGETS ${PROJECT_NAME}
-	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/xmipp4-plugins/
+	LIBRARY DESTINATION ${MODULE_INSTALL_DIR}/xmipp4-plugins/
 )
 
 # Only build tests if it is the main project
