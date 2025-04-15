@@ -63,6 +63,7 @@ jobs:
           cxx-compiler: ${{ matrix.compiler.cxx }}
           options: |
             CMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+            xmipp4-core_ROOT=""
           run-build: true
           build-args: --config ${{ env.BUILD_TYPE }}
 
