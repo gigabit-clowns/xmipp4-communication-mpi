@@ -104,5 +104,3 @@ jobs:
 
       - name: Install project with pip
         run: pip install . -v
-
-      # TODO run tests with pip
