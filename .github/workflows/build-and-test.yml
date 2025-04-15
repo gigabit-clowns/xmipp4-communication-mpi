@@ -102,7 +102,7 @@ jobs:
         run: |
           pip install git+https://github.com/gigabit-clowns/xmipp4-core@main -v
 
-      - name: Install xmipp4-core with pip
+      - name: Install project with pip
         run: pip install . -v
 
       # TODO run tests with pip
