@@ -54,7 +54,7 @@ version mpi_plugin::get_version() const noexcept
 void mpi_plugin::register_at(interface_catalog& catalog) const
 {
     auto& communicator_manager = 
-        catalog.get_interface_manager<communication::communicator_manager>();
+        catalog.get_backend_manager<communication::communicator_manager>();
     
     communication::mpi_communicator_backend::register_at(communicator_manager);
 }
