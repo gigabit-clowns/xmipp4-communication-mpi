@@ -62,7 +62,7 @@ TEST_CASE( "load and register xmipp4-communication-mpi plugin", "[communication-
     mpi_plugin->register_at(interfaces);
 
     auto *mpi_backend =
-        interfaces.get_interface_manager<communication::communicator_manager>()
+        interfaces.get_backend_manager<communication::communicator_manager>()
         .get_backend("mpi");
     REQUIRE( mpi_backend != nullptr );
     REQUIRE( mpi_backend->get_name() == "mpi" );
