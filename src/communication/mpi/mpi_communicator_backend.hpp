@@ -20,14 +20,6 @@
  *  e-mail address 'xmipp@cnb.csic.es'
  ***************************************************************************/
 
-/**
- * @file mpi_communicator_backend.hpp
- * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Definition of the communication::mpi_communicator_backend class
- * @date 2024-10-26
- * 
- */
-
 #include "mpi_instance.hpp"
 
 #include <xmipp4/core/communication/communicator_backend.hpp>

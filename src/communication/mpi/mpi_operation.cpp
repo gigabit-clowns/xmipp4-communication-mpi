@@ -18,14 +18,6 @@
  *  e-mail address 'xmipp@cnb.csic.es'
  ***************************************************************************/
 
-/**
- * @file mpi_operation.cpp
- * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Implementation of mpi_operation.hpp
- * @date 2024-10-26
- * 
- */
-
 #include "mpi_operation.hpp"
 
 namespace xmipp4 

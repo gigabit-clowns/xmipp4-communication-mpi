@@ -20,14 +20,6 @@
  *  e-mail address 'xmipp@cnb.csic.es'
  ***************************************************************************/
 
-/**
- * @file mpi_instance.hpp
- * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Provides the communication::mpi_instance class.
- * @date 2024-10-26
- * 
- */
-
 #include "mpi_communicator.hpp"
 
 #include <xmipp4/core/version.hpp>

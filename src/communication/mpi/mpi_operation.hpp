@@ -20,14 +20,6 @@
  *  e-mail address 'xmipp@cnb.csic.es'
  ***************************************************************************/
 
-/**
- * @file mpi_operation.hpp
- * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Operation conversion to MPI
- * @date 2024-10-26
- * 
- */
-
 #include <xmipp4/core/reduction_operation.hpp>
 
 #include <mpi.h>

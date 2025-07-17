@@ -20,15 +20,6 @@
  *  e-mail address 'xmipp@cnb.csic.es'
  ***************************************************************************/
 
-/**
- * @file mpi_plugin.hpp
- * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Definition of the mpi_plugin class
- * @date 2024-10-26
- * 
- */
-
-
 #include <xmipp4/core/plugin.hpp>
 
 namespace xmipp4 

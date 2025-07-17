@@ -18,14 +18,6 @@
  *  e-mail address 'xmipp@cnb.csic.es'
  ***************************************************************************/
 
-/**
- * @file mpi_plugin_hook.cpp
- * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Exports the entry point for this plugin.
- * @date 2024-10-26
- * 
- */
-
 #include "mpi_plugin.hpp"
 
 #include <xmipp4/core/platform/dynamic_shared_object.h>

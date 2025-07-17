@@ -20,14 +20,6 @@
  *  e-mail address 'xmipp@cnb.csic.es'
  ***************************************************************************/
 
-/**
- * @file mpi_error.hpp
- * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Utility function to check MPI return codes
- * @date 2024-10-26
- * 
- */
-
 #include <stdexcept>
 
 namespace xmipp4

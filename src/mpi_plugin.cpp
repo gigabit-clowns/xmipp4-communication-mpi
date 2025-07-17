@@ -18,14 +18,6 @@
  *  e-mail address 'xmipp@cnb.csic.es'
  ***************************************************************************/
 
-/**
- * @file mpi_plugin.cpp
- * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Implementation of mpi_plugin.hpp
- * @date 2024-10-26
- * 
- */
-
 #include "mpi_plugin.hpp"
 #include "communication/mpi/mpi_communicator_backend.hpp"
 

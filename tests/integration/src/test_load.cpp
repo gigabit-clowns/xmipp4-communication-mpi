@@ -18,13 +18,6 @@
  *  e-mail address 'xmipp@cnb.csic.es'
  ***************************************************************************/
 
-/**
- * @file test_version.cpp
- * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Test for version.hpp
- * @date 2023-08-12
- */
-
 
 #include <catch2/catch_test_macros.hpp>
 

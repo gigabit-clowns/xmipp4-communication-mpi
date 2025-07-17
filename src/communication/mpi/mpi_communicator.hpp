@@ -20,14 +20,6 @@
  *  e-mail address 'xmipp@cnb.csic.es'
  ***************************************************************************/
 
-/**
- * @file mpi_communicator.hpp
- * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
- * @brief Definition of the communication::mpi_communicator class
- * @date 2024-10-26
- * 
- */
-
 #include <xmipp4/core/communication/communicator.hpp>
 #include <xmipp4/core/span.hpp>
 #include <xmipp4/core/memory/byte.hpp>
